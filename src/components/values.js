@@ -202,7 +202,7 @@ export const chains = [
         order: 16,
         image: { avatar: true, src: Fantom },
         maintenance: false,
-        testNet: true,
+        testNet: false,
         mainnet: true,
         isDisabled: false,
     },
