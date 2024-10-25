@@ -280,7 +280,7 @@ export default function WalletList({ connected, input, discount }) {
       desktop: false,
       order: 14,
       keyName: "Fina",
-      isDisabled: true,
+      isDisabled: false,
     },
     {
       Component: <TonKeeper key="TonKeeper" close={connected} />,

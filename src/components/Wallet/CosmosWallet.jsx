@@ -65,7 +65,7 @@ function CosmosWallet({ wallet, serviceContainer }) {
         dispatch(setKeplrWallet(signer));
         handleGA4Event(
           googleAnalyticsCategories.Connect,
-          `Connected with: Keplr`
+          `Connected with: Keplr`,
         );
         return signer;
       } catch (error) {
@@ -79,7 +79,7 @@ function CosmosWallet({ wallet, serviceContainer }) {
         dispatch(
           setError({
             message: "Please install Keplr extension",
-          })
+          }),
         );
       return false;
     }
@@ -135,7 +135,7 @@ function CosmosWallet({ wallet, serviceContainer }) {
     default:
       return (
         <li
-          style={isMobile ? { display: "none" } : getStyle()}
+          style={getStyle()}
           onClick={() => onClickHandler("Keplr")}
           className="wllListItem keplr"
           data-wallet="Keplr"
