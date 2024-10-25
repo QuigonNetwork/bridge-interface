@@ -128,13 +128,14 @@ export const v3_ChainId = {
   4: { name: 'BSC', type: "EVM" },
   5: { name: 'ETH', type: "EVM" },
   7: { name: 'MATIC', type: "EVM" },
+  8: { name: 'FANTOM', type: "EVM" },
   18: { name: 'TEZOS', type: "TEZOS" },
   24: { name: 'SECRET', type: "COSMOS" },
   27: { name: 'TON', type: "TON" },
   29: { name: 'HEDERA', type: "HEDERA" },
   43: { name: "BASE", type: "EVM" },
   28: { name: 'ICP', type: "DFINITY" },
-  45: { name: 'BLAST', type: "EVM" }
+  45: { name: 'BLAST', type: "EVM" },
 }
 
 export const v3_getChainNonce = {
@@ -142,6 +143,7 @@ export const v3_getChainNonce = {
   'BSC': 4,
   'ETH': 5,
   'MATIC': 7,
+  'FANTOM': 8,
   'TEZOS': 18,
   'SECRET': 24,
   'TON': 27,
