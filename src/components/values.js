@@ -679,7 +679,7 @@ export const chains = [
         coming: false,
         newChain: false,
         chainId: 8453,
-        tnChainId: 84531,
+        tnChainId: 84532,
         isDisabled: false,
     },
     {

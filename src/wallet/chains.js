@@ -58,9 +58,9 @@ export const allchains = [
         },
     },
     {
-        chainName: "Base Goerli",
-        rpcUrls: ["https://base-goerli.diamondswap.org/rpc"],
-        chainId: 84531,
+        chainName: "Base Sepolia",
+        rpcUrls: ["https://base-sepolia-rpc.publicnode.com"],
+        chainId: 84532,
         nativeCurrency: {
             name: "ETH",
             symbol: "ETH",
