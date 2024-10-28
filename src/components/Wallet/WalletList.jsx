@@ -276,7 +276,7 @@ export default function WalletList({ connected, input, discount }) {
       ),
       name: "Fina",
       type: "Cosmos",
-      mobile: true,
+      mobile: false,
       desktop: false,
       order: 14,
       keyName: "Fina",

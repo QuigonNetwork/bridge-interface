@@ -11,6 +11,7 @@ export default function ClaimedNftContractModal() {
   const claimedNftContractModal = useSelector(
     (state) => state.general.claimedNftContractModal,
   );
+  const to = useSelector((state) => state.general.to);
 
   const handleClose = () => {
     dispatch(
@@ -55,7 +56,9 @@ export default function ClaimedNftContractModal() {
         </div>
       </Modal.Header>
       <Modal.Body className="modalBody text-center">
-        <div className="wrongNFT">{"Canister ID"}</div>
+        <div className="wrongNFT">
+          {to?.type === "DFINITY" ? "Canister ID" : "Nft Collection Address"}
+        </div>
         <InputGroup
           className="mb-3"
           style={{
