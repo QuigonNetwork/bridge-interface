@@ -314,7 +314,7 @@ export const connectKeplr = async (testnet, chain) => {
         }
     } else {
         if (isMobile) {
-            store.dispatch(setRedirectModal("Fina"));
+            store.dispatch(setRedirectModal("Keplr"));
         } else
             store.dispatch(
                 setError({

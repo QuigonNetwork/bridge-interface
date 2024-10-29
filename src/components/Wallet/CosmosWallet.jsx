@@ -74,7 +74,7 @@ function CosmosWallet({ wallet, serviceContainer }) {
       }
     } else {
       if (isMobile) {
-        dispatch(setRedirectModal("Fina"));
+        dispatch(setRedirectModal("Keplr"));
       } else
         dispatch(
           setError({
