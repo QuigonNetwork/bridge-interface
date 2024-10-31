@@ -94,7 +94,15 @@ const TransferredNft = ({
             from.type !== "DFINITY" &&
             from.type !== "Tezos"
           ) {
-            setTxnStatus(tx?.status?.toLowerCase());
+            if (from.value === "Secret") {
+              if (tx?.code === 0) {
+                setTxnStatus("completed");
+              } else if (tx?.code > 0) {
+                setTxnStatus("failed");
+              }
+            } else {
+              setTxnStatus(tx?.status?.toLowerCase());
+            }
           }
           if (to.type !== "DFINITY") {
             setHashes({
@@ -156,8 +164,8 @@ const TransferredNft = ({
       from.type === "DFINITY"
     ) {
       setTxnStatus("completed");
-    } else {
-      evmTxStatus(txn.provider, txn.hash)
+    } else if (txn?.provider && txn?.hash) {
+      evmTxStatus(txn?.provider, txn?.hash)
         .then((res) => {
           if (res) {
             setTxnStatus("completed");

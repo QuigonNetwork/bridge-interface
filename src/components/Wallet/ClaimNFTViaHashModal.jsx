@@ -5,16 +5,17 @@ import { useDispatch, useSelector } from "react-redux";
 import { setQuietConnection } from "../../store/reducers/signersSlice";
 import {
   setError,
-  setIcpClaimSuccess,
+  setClaimedNftContractModal,
   setIsAssociated,
   setSuccess,
   setTransferLoaderModal,
 } from "../../store/reducers/generalSlice";
-import { connectWalletByChain } from "../../utils";
+import { connectWalletByChain, sleep } from "../../utils";
 import { useWeb3React } from "@web3-react/core";
 import { v3_ChainId, v3_getChainNonce } from "../../utils/chainsTypes";
 import { switchNetwork } from "../../services/chains/evm/evmService";
 import { getChainObject } from "../values";
+import { TIME } from "../../constants/time";
 
 export default function ClaimNFTViaHashModal({ handleClose, bridge }) {
   const xpDecentralizedUtility = new XPDecentralizedUtility();
@@ -99,16 +100,17 @@ export default function ClaimNFTViaHashModal({ handleClose, bridge }) {
 
       console.log({ claimedHash });
       setHash("");
-      if (nftData?.destinationChain === "ICP") {
+      if (targetChainIdentifier.showClaimedNftContract) {
+        await sleep(TIME.FIVE_SECONDS);
         const claimData = await xpDecentralizedUtility.readClaimed721Event(
           targetChainIdentifier,
           claimedHash,
         );
         dispatch(setTransferLoaderModal(false));
         dispatch(
-          setIcpClaimSuccess({
-            showModal: true,
-            canisterId: claimData?.nft_contract,
+          setClaimedNftContractModal({
+            show: true,
+            nftContract: claimData?.nft_contract,
           }),
         );
       } else {

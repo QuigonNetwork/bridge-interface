@@ -19,6 +19,7 @@ import vk from "../../../assets//img/icons/vkey.svg";
 import PropTypes from "prop-types";
 
 import { withServices } from "../../App/hocs/withServices";
+import { XPDecentralizedUtility } from "../../../utils/xpDecentralizedUtility";
 
 const SecretAuth = ({ setLogdIn, serviceContainer }) => {
   const { bridge } = serviceContainer;
@@ -29,6 +30,8 @@ const SecretAuth = ({ setLogdIn, serviceContainer }) => {
   // const [contract, setContract] = useState();
   const [contractOnBlur, setContractOnBlur] = useState(false);
   const [importBlocked, setImportBlocked] = useState(false);
+  const xPDecentralizedUtility = new XPDecentralizedUtility();
+
   const { account, checkWallet, secretCred, NFTSetToggler, from } = useSelector(
     ({
       general: { account, checkWallet, secretCred, NFTSetToggler, from },
@@ -38,31 +41,29 @@ const SecretAuth = ({ setLogdIn, serviceContainer }) => {
       secretCred,
       NFTSetToggler,
       from,
-    })
+    }),
   );
+
+  const getNfts = async () => {
+    let secretNFTs = await xPDecentralizedUtility.nftList(
+      Chain.SECRET,
+      checkWallet || account,
+      secretCred.contract,
+      { viewingKey: secretCred.viewKey },
+    );
+
+    const fromChain = await bridge.getChain(Chain.SECRET);
+    return fromChain.filterNFTs(secretNFTs);
+  };
+
   const fetchSecretNfts = async () => {
     if (!secretCred.viewKey || !secretCred.contract) return;
 
     try {
       setImportBlocked(true);
-      const chainWrapper = await bridge.getChain(Chain.SECRET);
+      // const chainWrapper = await bridge.getChain(Chain.SECRET);
 
-      let secretNFTs = await chainWrapper.chain.nftList(
-        checkWallet || account,
-        secretCred.viewKey,
-        secretCred.contract
-      );
-
-      secretNFTs = secretNFTs.map((nft) => ({
-        ...nft,
-        metaData: !nft?.uri
-          ? {
-              ...nft?.metaData,
-              image: nft?.metaData?.media[0]?.url,
-              imageFormat: nft?.metaData?.media[0]?.extension,
-            }
-          : null,
-      }));
+      let secretNFTs = await getNfts();
       dispatch(addImportedNFTtoNFTlist(secretNFTs));
 
       setLogdIn(true);
@@ -80,22 +81,24 @@ const SecretAuth = ({ setLogdIn, serviceContainer }) => {
       setImportBlocked(true);
       const x = await bridge.getChain(Chain.SECRET);
 
-      const created = await x.chain.setViewingKey(
+      const created = await xPDecentralizedUtility.setViewingKey(
+        Chain.SECRET,
         x.signer,
         secretCred.contract,
-        secretCred.viewKey
+        secretCred.viewKey,
       );
       console.log("Viewing Key was created: ", created);
       if (created) {
-        let secretNFTs = await x.getNFTs(checkWallet || account, secretCred);
-        secretNFTs = x.filterNFTs(secretNFTs);
+        let secretNFTs = await getNfts();
         dispatch(addImportedNFTtoNFTlist(secretNFTs));
+        setLogdIn(true);
       }
     } catch (error) {
       console.log(error);
       dispatch(setError(error));
     }
     setImportBlocked(false);
+    dispatch(setBigLoader(false));
   };
 
   const handleContractChange = (value) => {
@@ -115,7 +118,10 @@ const SecretAuth = ({ setLogdIn, serviceContainer }) => {
       }
     }
     dispatch(setSecretCred({ ...secretCred, contract: value }));
-    if (value.length === 0 || (value.length === 45 && value.startsWith("secret1"))) {
+    if (
+      value.length === 0 ||
+      (value.length === 45 && value.startsWith("secret1"))
+    ) {
       setValidContract(true);
     } else {
       setValidContract(false);
@@ -213,7 +219,7 @@ const SecretAuth = ({ setLogdIn, serviceContainer }) => {
                   setSecretCred({
                     ...secretCred,
                     viewKey: e.target.value,
-                  })
+                  }),
                 )
               }
             />
@@ -281,7 +287,7 @@ export const SecretContractPanned = () => {
             {isMobile
               ? `${secretCred.contract.slice(
                   0,
-                  5
+                  5,
                 )}...${secretCred.contract.slice(-6)}`
               : secretCred.contract}
           </a>

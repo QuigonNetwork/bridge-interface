@@ -9,7 +9,7 @@ import xpchallenge from "../services/xpchallenge";
 
 import { extractType, formatAddress, setupURI } from "../utils";
 import { switchNetwork } from "../services/chains/evm/evmService";
-import { getChainObject } from "../components/values";
+import { getChainObject, isTestnet } from "../components/values";
 import { XPDecentralizedUtility } from "../utils/xpDecentralizedUtility";
 
 const Xpchallenge = xpchallenge();
@@ -18,6 +18,8 @@ const feeMultiplier = 1.1;
 class AbstractChain {
   chain;
   showMintWith = false;
+  showClaimedNftContract = false;
+
   constructor({ chainParams, nonce, chain, bridge }) {
     this.chainParams = chainParams;
     this.nonce = nonce;
@@ -831,36 +833,53 @@ class V3_Tezos extends AbstractChain {
 }
 
 class Cosmos extends AbstractChain {
-  showMintWith = true;
+  showMintWith = false;
+  showClaimedNftContract = true;
+  v3Bridge = true
   XpNft = this.chain.XpNft.split(",")[0];
   constructor(params) {
     super(params);
   }
 
-  async getNFTs(account, secretCred) {
-    let secretNFTs = await this.chain.nftList(
-      account,
-      secretCred.viewKey,
-      secretCred.contract
-    );
+  async getNFTs(address, secretCred) {
+    const xPDecentralizedUtility = new XPDecentralizedUtility();
+    return xPDecentralizedUtility.nftList(ChainNonce.SECRET, address, secretCred.contract, {
+      viewingKey: secretCred.viewKey,
+    })
+  }
 
-    secretNFTs = secretNFTs.map((nft) => ({
+
+  filterNFTs(nfts) {
+    const chain = getChainObject(ChainNonce.SECRET);
+    const chainId = isTestnet ? chain.tnChainId : chain.chainId;
+    return nfts.map((nft) => ({
       ...nft,
       native: {
         ...nft.native,
-        name: nft?.native?.metadata?.name,
-        description: nft?.native?.metadata?.description,
+        chainId,
       },
       metaData: !nft?.uri
         ? {
-          ...nft?.native?.metadata,
-          image: nft?.native?.metadata?.media[0]?.url,
-          imageFormat: nft?.native?.metadata?.media[0]?.extension,
+          ...nft?.metaData,
+          image: nft?.metaData?.media[0]?.url,
+          imageFormat: nft?.metaData?.media[0]?.extension,
         }
         : null,
     }));
+  }
 
-    return secretNFTs;
+
+  async balance() {
+    if (!this.signer)
+      throw new Error("No signer for ", this.chainParams.text);
+    try {
+      const xPDecentralizedUtility = new XPDecentralizedUtility();
+      const bal = xPDecentralizedUtility.getBalance(ChainNonce.SECRET, this.signer)
+      return bal;
+    } catch (e) {
+      console.log(e)
+      return 0;
+    }
   }
 }
 
@@ -1207,6 +1226,7 @@ class HEDERA extends EVM {
 
 class ICP extends AbstractChain {
   v3Bridge = true;
+  showClaimedNftContract = true;
 
   constructor(params) {
     super(params);

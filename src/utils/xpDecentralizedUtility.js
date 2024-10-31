@@ -60,7 +60,6 @@ export class XPDecentralizedUtility {
     }
     const nftType = amount ? "sft" : "nft"
     console.log("approving ", nftType)
-
     await originChain.approveNft(signer, tokenId, contract, nftType);
 
     await sleep(TIME.TEN_SECONDS);
@@ -353,13 +352,18 @@ export class XPDecentralizedUtility {
       v3_ChainId[targetChainIdentifier?.nonce].name === "HEDERA" ||
       v3_ChainId[targetChainIdentifier?.nonce].name === "ICP" ||
       v3_ChainId[targetChainIdentifier?.nonce].name === "TEZOS" ||
+      v3_ChainId[targetChainIdentifier?.nonce].name === "SECRET" ||
       v3_ChainId[targetChainIdentifier?.nonce].name === "MULTIVERSX"
     ) {
       return {
         hash: claim?.hash(),
+        nftType: nftData.nftType
       };
     }
-    return claim?.ret;
+    return {
+      ...claim?.ret,
+      nftType: nftData.nftType
+    };
   };
 
   associateTokens = async (targetChainIdentifier) => {
@@ -403,11 +407,18 @@ export class XPDecentralizedUtility {
     return await destChain.readClaimed721Event(hash)
   }
 
-  nftList = async (chainNonce, address, contract) => {
+  readClaimed1155Event = async (destChainIdentifier, hash) => {
+    const destChain = await this.getChainFromFactory(
+      v3_ChainId[destChainIdentifier?.nonce].name
+    );
+    return await destChain.readClaimed1155Event(hash)
+  }
+
+  nftList = async (chainNonce, address, contract, extraArgs) => {
     const destChain = await this.getChainFromFactory(
       v3_ChainId[chainNonce].name
     );
-    return await destChain.nftList(address, contract)
+    return destChain.nftList(address, contract, extraArgs)
   };
 
   getBalance = async (chainNonce, signer) => {
@@ -418,4 +429,15 @@ export class XPDecentralizedUtility {
     const decimals = CHAIN_INFO.get(chainNonce)?.decimals;
     return Number(res) / decimals;
   };
+
+  setViewingKey = async (chainNonce, signer, contract, viewKey) => {
+    const destChain = await this.getChainFromFactory(
+      v3_ChainId[chainNonce].name
+    );
+    return destChain.setViewingKey(
+      signer,
+      contract,
+      viewKey
+    )
+  }
 }

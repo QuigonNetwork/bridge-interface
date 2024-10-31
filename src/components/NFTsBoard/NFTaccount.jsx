@@ -79,11 +79,11 @@ function NFTaccount(props) {
   const checkWallet = useSelector((state) => state.general.checkWallet);
 
   const accountWalletModal = useSelector(
-    (state) => state.general.accountWalletModal
+    (state) => state.general.accountWalletModal,
   );
 
   const undeployedUserStore = useSelector(
-    (state) => state.general.undeployedUserStore
+    (state) => state.general.undeployedUserStore,
   );
 
   const lockMainPannel = useSelector((state) => state.general.lockMainPannel);
@@ -103,7 +103,6 @@ function NFTaccount(props) {
         fromChain.getNFTs(bridge.checkWallet || _account, contract),
         chainSpecific && chainSpecific(dispatch, fromChain, _account),
       ]);
-
       nfts = fromChain.filterNFTs(nfts);
 
       //fromChain.estimateDeployUserStore();
@@ -182,7 +181,6 @@ function NFTaccount(props) {
   const isMobile = useCheckMobileScreen();
 
   const dest = useSelector((state) => state.general.to);
-
 
   const isClaimViaHash = useSelector((state) => state.general.isClaimViaHash);
 

@@ -268,7 +268,7 @@ export default function WalletList({ connected, input, discount }) {
       desktop: true,
       order: 14,
       keyName: "Keplr",
-      isDisabled: true,
+      isDisabled: false,
     },
     {
       Component: (
@@ -276,11 +276,11 @@ export default function WalletList({ connected, input, discount }) {
       ),
       name: "Fina",
       type: "Cosmos",
-      mobile: true,
+      mobile: false,
       desktop: false,
       order: 14,
       keyName: "Fina",
-      isDisabled: true,
+      isDisabled: false,
     },
     {
       Component: <TonKeeper key="TonKeeper" close={connected} />,
@@ -465,7 +465,7 @@ export default function WalletList({ connected, input, discount }) {
         .filter(
           (wallet) =>
             wallet.keyName.toLowerCase().includes(input.toLowerCase()) &&
-            !wallet.isDisabled
+            !wallet.isDisabled,
         )
     : from
     ? sortWallet(walletComponents)

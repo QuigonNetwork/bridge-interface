@@ -3,18 +3,22 @@ import { useDispatch, useSelector } from "react-redux";
 import { setQuietConnection } from "../../store/reducers/signersSlice";
 import {
   setError,
-  setIcpClaimSuccess,
+  setClaimedNftContractModal,
   setIsAssociated,
   setTempleClaimed,
   setTempleWalletData,
   setTemporaryFrom,
   setTransferLoaderModal,
+  removeFromSelectedNFTList,
+  cleanTxnHashArr,
+  setNFTSetToggler,
 } from "../../store/reducers/generalSlice";
 import { XPDecentralizedUtility } from "../../utils/xpDecentralizedUtility";
 import { Modal, Spinner } from "react-bootstrap";
 import WalletList from "../Wallet/WalletList";
 import { sleep } from "../../utils";
 import { TIME } from "../../constants/time";
+import { setQRCodeModal } from "../Wallet/TONWallet/tonStore";
 
 export const ClaimInDestination = (connection) => {
   return function CB({
@@ -45,6 +49,9 @@ export const ClaimInDestination = (connection) => {
     );
 
     const isAssociated = useSelector((state) => state.general.isAssociated);
+    const selectedNFTList = useSelector(
+      (state) => state.general.selectedNFTList,
+    );
 
     const handler = async () => {
       if (to.text === "Tezos") {
@@ -86,27 +93,47 @@ export const ClaimInDestination = (connection) => {
           return;
         }
 
-        const { hash: claimedHash } = await xPDecentralizedUtility.claimNFT(
+        const {
+          hash: claimedHash,
+          nftType,
+        } = await xPDecentralizedUtility.claimNFT(
           originChainIdentifier,
           bridge,
           hash,
           chainWapper,
           fromChainWapper,
         );
-        console.log({ claimedHash });
-        if (to.text === "ICP") {
+        console.log({ claimedHash, nftType });
+
+        if (targetChainIdentifier.showClaimedNftContract) {
           await sleep(TIME.FIVE_SECONDS);
-          const claimData = await xPDecentralizedUtility.readClaimed721Event(
-            targetChainIdentifier,
-            claimedHash,
-          );
+          let claimData;
+          if (nftType === "multiple") {
+            claimData = await xPDecentralizedUtility.readClaimed1155Event(
+              targetChainIdentifier,
+              claimedHash,
+            );
+          } else {
+            claimData = await xPDecentralizedUtility.readClaimed721Event(
+              targetChainIdentifier,
+              claimedHash,
+            );
+          }
           dispatch(setTransferLoaderModal(false));
           dispatch(
-            setIcpClaimSuccess({
-              showModal: true,
-              canisterId: claimData?.nft_contract,
+            setClaimedNftContractModal({
+              show: true,
+              nftContract: claimData?.nft_contract,
             }),
           );
+
+          selectedNFTList?.forEach((nft) => {
+            const { txn } = nft;
+            if (txn) dispatch(removeFromSelectedNFTList(nft));
+          });
+          dispatch(cleanTxnHashArr());
+          dispatch(setNFTSetToggler());
+          dispatch(setQRCodeModal(false));
         } else {
           dispatch(setTransferLoaderModal(false));
         }
