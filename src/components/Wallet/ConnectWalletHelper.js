@@ -302,7 +302,7 @@ export const connectKeplr = async (testnet, chain) => {
 
             const secretjs = await promisify(() => import("secretjs"));
             const signer = new secretjs.SecretNetworkClient({
-                url: testnet ? TestNetRpcUri[key] : MainNetRpcUri[key],
+                url: testnet ? TestNetRpcUri[key] : "https://rpc.ankr.com/http/scrt_cosmos",
                 chainId,
                 wallet: offlineSigner,
                 walletAddress: address,

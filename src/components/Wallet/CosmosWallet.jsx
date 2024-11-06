@@ -11,7 +11,7 @@ import { getRightPath, promisify } from "../../utils";
 
 import { withServices } from "../App/hocs/withServices";
 
-import { Chain, MainNetRpcUri, TestNetRpcUri } from "xp.network";
+import { Chain, TestNetRpcUri } from "xp.network";
 import {
   setConnectedWallet,
   setAccount,
@@ -32,7 +32,7 @@ function CosmosWallet({ wallet, serviceContainer }) {
 
   const from = useSelector((state) => state.general.from);
   const temporaryFrom = useSelector((state) => state.general.temporaryFrom);
-  const testnet = useSelector((state) => state.general.testNet);
+  const testnet = false;
   const navigate = useNavigate();
   const isMobile = useCheckMobileScreen();
 
@@ -55,7 +55,7 @@ function CosmosWallet({ wallet, serviceContainer }) {
 
         const secretjs = await promisify(() => import("secretjs"));
         const signer = new secretjs.SecretNetworkClient({
-          url: testnet ? TestNetRpcUri[key] : MainNetRpcUri[key],
+          url: testnet ? TestNetRpcUri[key] : "https://rpc.ankr.com/http/scrt_cosmos",
           chainId,
           wallet: offlineSigner,
           walletAddress: address,

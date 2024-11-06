@@ -341,7 +341,7 @@ const connectWallet = {
     chainWrapper.setSigner(signer); // Set the signer in the chainWrapper
   },
   SECRET: async (bridge, nonce) => {
-    const { testNet: testnet } = store.getState().general
+    const { testNet: testnet } = false
     const chainWrapper = await bridge.getChain(nonce);
     const signer = await connectKeplr(testnet, getChainObject(nonce)); // Connect to the ICP wallet and get the signer
     chainWrapper.setSigner(signer); // Set the signer in the chainWrapper

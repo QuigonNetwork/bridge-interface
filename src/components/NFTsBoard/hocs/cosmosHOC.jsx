@@ -1,16 +1,16 @@
 /* eslint-disable react/prop-types */
 import React from "react";
 
-import { ChainType, MainNetRpcUri, TestNetRpcUri } from "xp.network";
+import { ChainType, TestNetRpcUri } from "xp.network";
 import { ClaimInDestination } from "../../TransferBoard/ClaimInDestination";
 import { Chain } from "xp.network";
 import { getChainObject } from "../../values";
-import { useSelector } from "react-redux";
+// import { useSelector } from "react-redux";
 import { promisify } from "../../../utils";
 
 export const withCosmos = (Wrapped) =>
   function CBU(props) {
-    const testnet = useSelector((state) => state.general.testNet);
+    const testnet = false;
 
     const connectionCallback = async (bridge) => {
       const chainWrapper = await bridge.getChain(Chain.SECRET);
@@ -31,7 +31,7 @@ export const withCosmos = (Wrapped) =>
 
       const secretjs = await promisify(() => import("secretjs"));
       const signer = new secretjs.SecretNetworkClient({
-        url: testnet ? TestNetRpcUri[key] : MainNetRpcUri[key],
+        url: testnet ? TestNetRpcUri[key] : "https://rpc.ankr.com/http/scrt_cosmos",
         chainId,
         wallet: offlineSigner,
         walletAddress: address,
