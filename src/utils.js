@@ -12,7 +12,7 @@ import { injected } from "./wallet/connectors";
 import { TempleWallet } from "@temple-wallet/dapp";
 import { connectExtension } from "./components/Wallet/MultiversXWallet/HigherMultiversX";
 import { connectPlugWallet } from "./components/Wallet/IcpConnections";
-import { connectKeplr } from "./components/Wallet/ConnectWalletHelper";
+import { connectCasperWallet, connectKeplr } from "./components/Wallet/ConnectWalletHelper";
 
 /*const testnet = window.location.pathname.includes("testnet");
 const staging = window.location.pathname.includes("staging");
@@ -345,6 +345,11 @@ const connectWallet = {
     const chainWrapper = await bridge.getChain(nonce);
     const signer = await connectKeplr(testnet, getChainObject(nonce)); // Connect to the ICP wallet and get the signer
     chainWrapper.setSigner(signer); // Set the signer in the chainWrapper
+  },
+  CASPER: async (bridge, nonce) => {
+    const chainWrapper = await bridge.getChain(nonce);
+    const signer = await connectCasperWallet();
+    chainWrapper.setSigner(signer);
   }
 };
 
@@ -376,6 +381,9 @@ export const connectWalletByChain = async (
       await connectWallet[type](bridge, nonce);
       break;
     case "SECRET":
+      await connectWallet[type](bridge, nonce);
+      break;
+    case "CASPER":
       await connectWallet[type](bridge, nonce);
       break;
   }
