@@ -1362,7 +1362,9 @@ class ICP extends AbstractChain {
     }*/
 }
 
-class Casper extends AbstractChain {
+class V3_Casper extends AbstractChain {
+  v3Bridge = true;
+
   constructor(params) {
     super(params);
   }
@@ -1445,6 +1447,7 @@ export default {
   V3_EVM,
   V3_Multiversex,
   V3_TON,
+  V3_Casper,
   NoWhiteListEVM,
   VeChain,
   Elrond,
@@ -1459,5 +1462,4 @@ export default {
   APTOS,
   HEDERA,
   ICP,
-  Casper,
 };

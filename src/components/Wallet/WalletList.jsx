@@ -419,7 +419,7 @@ export default function WalletList({ connected, input, discount }) {
       order: 223,
       type: "Casper",
       keyName: "Casper",
-      isDisabled: true,
+      isDisabled: false,
     },
 
     ////////////!!!!

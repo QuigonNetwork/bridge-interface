@@ -134,6 +134,7 @@ export const v3_ChainId = {
   24: { name: 'SECRET', type: "COSMOS" },
   27: { name: 'TON', type: "TON" },
   29: { name: 'HEDERA', type: "HEDERA" },
+  39: { name: 'CASPER', type: "CASPER" },
   43: { name: "BASE", type: "EVM" },
   28: { name: 'ICP', type: "DFINITY" },
   45: { name: 'BLAST', type: "EVM" },
@@ -150,7 +151,8 @@ export const v3_getChainNonce = {
   'SECRET': 24,
   'TON': 27,
   'HEDERA': 29,
-  'BASE': 43,
   'ICP': 28,
+  'CASPER': 39,
+  'BASE': 43,
   'BLAST': 45,
 }

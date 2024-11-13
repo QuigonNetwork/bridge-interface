@@ -633,7 +633,7 @@ export const chains = [
         mainnet: true,
         coming: false,
         newChain: biz,
-        isDisabled: true,
+        isDisabled: false,
     },
     {
         type: "EVM",
