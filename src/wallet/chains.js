@@ -171,11 +171,21 @@ export const allchains = [
         chainName: "Abeychain Mainnet",
         rpcUrls: ["https://rpc.abeychain.com"],
         chainId: 0xb3,
+        nativeCurrency: {
+            name: "ABEY",
+            symbol: "ABEY",
+            decimals: 18,
+        },
     },
     {
         chainName: "Abeychain Testnet",
         rpcUrls: ["https://testrpc.abeychain.com"],
         chainId: 0xb2,
+        nativeCurrency: {
+            name: "ABEY",
+            symbol: "ABEY",
+            decimals: 18,
+        },
     },
     {
         name: "Ethereum Mainnet",

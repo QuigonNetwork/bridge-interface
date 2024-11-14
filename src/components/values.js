@@ -450,7 +450,7 @@ export const chains = [
         mainnet: true,
         newChain: false,
         coming: false,
-        isDisabled: true,
+        isDisabled: false,
     },
     {
         type: "VeChain",
