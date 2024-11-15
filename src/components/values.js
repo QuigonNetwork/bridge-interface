@@ -392,8 +392,8 @@ export const chains = [
         chainId: 1284,
         tnChainId: 1287,
         image: { avatar: true, src: Moon },
-        testNet: true,
-        mainnet: true,
+        testNet: false,
+        mainnet: false,
     },
     {
         type: "EVM",
