@@ -136,8 +136,8 @@ export const chains = [
         order: 15,
         image: { avatar: true, src: Elrond },
         maintenance: false,
-        testNet: true,
-        mainnet: true,
+        testNet: false,
+        mainnet: false,
     },
     {
         type: "EVM",
@@ -164,8 +164,8 @@ export const chains = [
         order: 11,
         image: { avatar: true, src: Avalanche },
         maintenance: false,
-        testNet: true,
-        mainnet: true,
+        testNet: false,
+        mainnet: false,
     },
     {
         type: "EVM",
@@ -178,7 +178,7 @@ export const chains = [
         image: { avatar: true, src: Fantom },
         maintenance: false,
         testNet: false,
-        mainnet: true,
+        mainnet: false,
     },
     {
         type: "Algorand",
