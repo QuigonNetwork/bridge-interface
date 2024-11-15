@@ -119,8 +119,13 @@ export const allchains = [
     },
     {
         chainName: "Moonbeam Testnet",
-        rpcUrls: ["https://rpc.api.moonbase.moonbeam.network"],
-        chainId: 1284,
+        rpcUrls: ["https://moonbase-alpha.public.blastapi.io"],
+        chainId: 1287,
+        nativeCurrency: {
+            name: "DEV",
+            symbol: "DEV",
+            decimals: 18,
+        },
     },
     {
         chainName: "Cadusous TestNet",
@@ -165,7 +170,12 @@ export const allchains = [
     {
         chainName: "Moonbeam Mainnet",
         rpcUrls: ["https://rpc.api.moonbeam.network"],
-        chainId: 1287,
+        chainId: 1284,
+        nativeCurrency: {
+            name: "Glimmer",
+            symbol: "GLMR",
+            decimals: 18,
+        },
     },
     {
         chainName: "Abeychain Mainnet",

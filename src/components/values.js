@@ -434,7 +434,7 @@ export const chains = [
         image: { avatar: true, src: Moon },
         testNet: true,
         mainnet: true,
-        isDisabled: true,
+        isDisabled: false,
     },
     {
         type: "EVM",
@@ -450,7 +450,7 @@ export const chains = [
         mainnet: true,
         newChain: false,
         coming: false,
-        isDisabled: false,
+        isDisabled: true,
     },
     {
         type: "VeChain",
