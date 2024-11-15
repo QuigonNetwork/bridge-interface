@@ -9,7 +9,7 @@ import PageNotFound from "./PageNotFound";
 import { getRightPath } from "../utils";
 
 import { withServices } from "../components/App/hocs/withServices";
-import { Crossroads, Minting } from "../event";
+import { Crossroads, Minting, UtilityMinting } from "../event";
 
 function XpBridge({ serviceContainer }) {
   const [nftAccountPath, setPath] = useState("/account");
@@ -61,6 +61,17 @@ function XpBridge({ serviceContainer }) {
           element={
             <>
               <Minting />
+              <div className="alex">
+                <ConnectWallet />
+              </div>
+            </>
+          }
+        />
+         <Route
+          path="/utility-bridge-minting"
+          element={
+            <>
+              <UtilityMinting />
               <div className="alex">
                 <ConnectWallet />
               </div>

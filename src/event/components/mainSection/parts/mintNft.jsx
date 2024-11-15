@@ -22,8 +22,11 @@ export const MintNft = ({
   account,
   chains,
   useContractVariable,
+  maxLimit
 }) => {
-  const MAX_MINT = 5;
+  console.log("maxLimit n",maxLimit);
+  
+  const MAX_MINT = maxLimit || 5;
   const [countMint, setCountMint] = useState(1);
   const [refresh, setRefresh] = useState(false);
 

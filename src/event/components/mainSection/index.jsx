@@ -12,7 +12,10 @@ export const MainSection = ({
   description,
   className,
   useContractVariable,
+  maxLimit
 }) => {
+  console.log("maxLimit m",maxLimit);
+
   const [choosenChain, setChoosenChain] = useState(0);
 
   return (
@@ -31,6 +34,7 @@ export const MainSection = ({
           chains={chains}
           description={description}
           useContractVariable={useContractVariable}
+          maxLimit={maxLimit}
         />
       </article>
     </>

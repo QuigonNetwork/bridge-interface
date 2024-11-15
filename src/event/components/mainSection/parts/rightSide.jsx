@@ -18,7 +18,10 @@ export const RightSide = ({
   description,
   chains,
   useContractVariable,
+  maxLimit
 }) => {
+  console.log("maxLimit r",maxLimit);
+
   const account = useSelector((state) => state.general.account);
   const { totalMinted } = useSelector((state) => state.events);
 
@@ -64,11 +67,12 @@ export const RightSide = ({
           account={account}
           chains={chains}
           useContractVariable={useContractVariable}
+          maxLimit={maxLimit}
         />
         <div className="info-section-container ">
           <span>{totalMinted} minted</span>
           <div className="dot-separate"></div>
-          <span>Up to 5 mints per wallet</span>
+          <span>Up to {maxLimit || 5} mints per wallet</span>
           <div className="dot-separate"></div>
           {Date.now() > startDate && (
             <ProjectTimer text={""} date={endDate} onTimeUp={() => {}} />

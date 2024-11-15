@@ -26,7 +26,10 @@ export const EventPage = withServices(
     className,
     useContractVariable,
     successImage,
+    maxLimit
   }) => {
+    console.log("maxLimit e",maxLimit);
+
     const { bridge } = serviceContainer;
     const dispatch = useDispatch();
     const { success } = useSelector((state) => state.events);
@@ -77,6 +80,7 @@ export const EventPage = withServices(
             description={description}
             className={className}
             useContractVariable={useContractVariable}
+            maxLimit={maxLimit}
           />
           <JoinSection />
         </div>

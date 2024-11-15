@@ -106,6 +106,42 @@ export const chainDataMintingPath = [
   },
 ];
 
+export const chainDataUtilityMintingPath = [
+  {
+    name: "Polygon",
+    image: polygonIcon,
+    nft: "https://ipfs.io/ipfs/QmZMkXd7hm9DPNnQTXbpJfi67kKaasm4EQQQLsVuHjQL7Y",
+    chainNonce: "7",
+    creationBlock: 64000199,
+    chainId: "137",
+    evm: true,
+    rpc: "https://polygon-rpc.com",
+    contract: "0xB2355d4844361E6E156C9DBf01d95b5e5AAaA354",
+  },
+  {
+    name: "BSC",
+    image: BSCicon,
+    nft: "https://ipfs.io/ipfs/QmZEM3mvhvxEjRi2f9wDcvQ2msdX6uR2GTt9ntTrTfiH1q",
+    chainNonce: "4",
+    chainId: "56",
+    creationBlock: 43804707,
+    evm: true,
+    rpc: "https://bsc-dataseed.binance.org",
+    contract: "0x7a17dec209ff761c0f3dc09a988125641513fc8b", //TODO: NEEDS TO CHANGE FOR MAINNET
+  },
+  {
+    name: "Avalanche",
+    image: avax,
+    nft: "https://ipfs.io/ipfs/QmRw6udf6Wkqo38kVXekxTCgMu6o1gJigP77ujSi1erVLX",
+    chainNonce: "6",
+    chainId: "43114",
+    creationBlock: 52777307, // TODO: NEEDS TO CHANGE FOR AVAX
+    evm: true,
+    rpc: "https://api.avax.network/ext/bc/C/rpc",
+    contract: "0xbFDdaF774a3690a44852c70694E05cDaeadae792", //TODO: NEEDS TO CHANGE FOR MAINNET
+  },
+];
+
 export const chainDataMintingPathTestnet = [
   {
     name: "Polygon Amoy Testnet",
