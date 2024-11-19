@@ -25,10 +25,10 @@ import { getRightPath } from "../../../utils";
 import { setupWalletSelector } from "@near-wallet-selector/core";
 // import { setupNightly } from "@near-wallet-selector/nightly";
 // import { setupNearWallet } from "@near-wallet-selector/near-wallet";
-import { setupMyNearWallet } from "@near-wallet-selector/my-near-wallet";
+// import { setupMyNearWallet } from "@near-wallet-selector/my-near-wallet";
 import { setupModal } from "@near-wallet-selector/modal-ui";
 import { setupHereWallet } from "@near-wallet-selector/here-wallet";
-import { setupMeteorWallet } from "@near-wallet-selector/meteor-wallet";
+// import { setupMeteorWallet } from "@near-wallet-selector/meteor-wallet"  ;
 import { setupSender } from "@near-wallet-selector/sender";
 import { distinctUntilChanged, map } from "rxjs";
 import { adaptToWalletSelector } from "./utils";
@@ -51,14 +51,19 @@ export const withNearConnection = (Wrapped) =>
       dispatch(setConnectedWallet("Near Wallet"));
     };
 
-    const { NFTList, selectedNFTList, afterNearRedirect, to, from } =
-      useSelector((state) => ({
-        NFTList: state.general.NFTList,
-        selectedNFTList: state.general.selectedNFTList,
-        afterNearRedirect: state.general.afterNearRedirect,
-        to: state.general.to,
-        from: state.general.from,
-      }));
+    const {
+      NFTList,
+      selectedNFTList,
+      afterNearRedirect,
+      to,
+      from,
+    } = useSelector((state) => ({
+      NFTList: state.general.NFTList,
+      selectedNFTList: state.general.selectedNFTList,
+      afterNearRedirect: state.general.afterNearRedirect,
+      to: state.general.to,
+      from: state.general.from,
+    }));
 
     const params = new URLSearchParams(location.search.replace("?", ""));
     const nearAuth = params.get("all_keys") && params.get("account_id"); // && !params.get("WLS");
@@ -74,7 +79,7 @@ export const withNearConnection = (Wrapped) =>
         const { bridge } = serviceContainer;
         (async () => {
           const nearParams = xpDecentralizedUtility.config.nearParams;
-          const url = window.location.href;
+          // const url = window.location.href;
           const [_selector, chainWrapper] = await Promise.all([
             setupWalletSelector({
               network: window.location.pathname.includes("testnet")
@@ -86,16 +91,16 @@ export const withNearConnection = (Wrapped) =>
                 //   //successUrl: url,
                 //   //failureUrl: url,
                 // }),
-                setupMyNearWallet({
-                  successUrl:
-                    url +
-                    `${url.includes("?") ? "&" : "?"}selectedNearWallet=mnw${
-                      to ? `&toChain=${to.nonce}` : ""
-                    }`,
-                  failureUrl: url + `&selectedNearWallet=mnw`,
-                }),
+                // setupMyNearWallet({
+                //   successUrl:
+                //     url +
+                //     `${url.includes("?") ? "&" : "?"}selectedNearWallet=mnw${
+                //       to ? `&toChain=${to.nonce}` : ""
+                //     }`,
+                //   failureUrl: url + `&selectedNearWallet=mnw`,
+                // }),
                 setupHereWallet(),
-                setupMeteorWallet(),
+                // setupMeteorWallet(),
                 setupSender(),
               ],
             }),
