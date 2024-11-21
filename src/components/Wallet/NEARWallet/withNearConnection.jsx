@@ -27,7 +27,7 @@ import { setupWalletSelector } from "@near-wallet-selector/core";
 // import { setupNearWallet } from "@near-wallet-selector/near-wallet";
 // import { setupMyNearWallet } from "@near-wallet-selector/my-near-wallet";
 import { setupModal } from "@near-wallet-selector/modal-ui";
-import { setupHereWallet } from "@near-wallet-selector/here-wallet";
+// import { setupHereWallet } from "@near-wallet-selector/here-wallet";
 // import { setupMeteorWallet } from "@near-wallet-selector/meteor-wallet"  ;
 import { setupSender } from "@near-wallet-selector/sender";
 import { distinctUntilChanged, map } from "rxjs";
@@ -99,7 +99,7 @@ export const withNearConnection = (Wrapped) =>
                 //     }`,
                 //   failureUrl: url + `&selectedNearWallet=mnw`,
                 // }),
-                setupHereWallet(),
+                // setupHereWallet(),
                 // setupMeteorWallet(),
                 setupSender(),
               ],
@@ -129,7 +129,10 @@ export const withNearConnection = (Wrapped) =>
                 return;
               }
 
-              if (nextAccounts[0]) {
+              if (
+                !window.location.pathname.includes("account") &&
+                nextAccounts[0]
+              ) {
                 saveWallet(
                   nextAccounts[0].accountId,
                   bridge,
