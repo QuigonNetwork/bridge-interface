@@ -126,7 +126,7 @@ export function getChainName(chainNumber) {
 export const v3_ChainId = {
   2: { name: "MULTIVERSX", type: "ELROND" },
   4: { name: 'BSC', type: "EVM" },
-  5: { name: 'ETH', type: "EVM" },
+  5: { name: 'ETHEREUM', type: "EVM" },
   6: { name: 'AVALANCHE', type: "EVM" },
   7: { name: 'MATIC', type: "EVM" },
   8: { name: 'FANTOM', type: "EVM" },
@@ -144,7 +144,7 @@ export const v3_ChainId = {
 export const v3_getChainNonce = {
   "MULTIVERSX": 2,
   'BSC': 4,
-  'ETH': 5,
+  'ETHEREUM': 5,
   'AVALANCHE': 6,
   'MATIC': 7,
   'FANTOM': 8,
