@@ -96,8 +96,8 @@ export const chains = [
         order: -6,
         image: { avatar: true, src: Ethereum },
         maintenance: false,
-        testNet: true,
-        mainnet: true,
+        testNet: false,
+        mainnet: false,
     },
     {
         type: "EVM",
