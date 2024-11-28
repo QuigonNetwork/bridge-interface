@@ -349,5 +349,7 @@ export const connectCasperWallet = async () => {
     if (!connection) return store.dispatch(setError({ message: "Could not establish a connection" }));
 
     account.address = await provider.getActivePublicKey();
+    account.signer = provider;
+
     return account.signer
 }
