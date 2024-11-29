@@ -1398,7 +1398,7 @@ class V3_Casper extends AbstractChain {
   async preParse(nft) {
     let metaData = undefined;
 
-    if (nft.native.metadata) {
+    if (nft.native.metadata?.asset) {
       metaData = {
         image: nft.native.metadata.asset,
         ...nft.native.metadata,
@@ -1433,6 +1433,10 @@ class V3_Casper extends AbstractChain {
         metaData: data,
       },
     };
+  }
+
+  filterNFTs(nfts) {
+    return nfts;
   }
 
   /*   async balance(address) {
