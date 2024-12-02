@@ -119,7 +119,14 @@ export default function ClaimNFTViaHashModal({ handleClose, bridge }) {
       }
     } catch (e) {
       console.log("in catch block", e);
-      dispatch(setError({ message: e.message }));
+      if (
+        nftData.destinationChain === "CASPER" &&
+        e?.message?.includes("Mint error: 0")
+      ) {
+        dispatch(setError({ message: "Insufficient funds" }));
+      } else {
+        dispatch(setError({ message: e.message }));
+      }
       setHash("");
       dispatch(setTransferLoaderModal(false));
     }

@@ -92,7 +92,8 @@ const TransferredNft = ({
             txnStatus !== "Completed" &&
             from.type !== "Hedera" &&
             from.type !== "DFINITY" &&
-            from.type !== "Tezos"
+            from.type !== "Tezos" &&
+            from.type !== "Casper"
           ) {
             if (from.value === "Secret") {
               if (tx?.code === 0) {
@@ -161,7 +162,8 @@ const TransferredNft = ({
     if (
       from.type === "Hedera" ||
       from.type === "Tezos" ||
-      from.type === "DFINITY"
+      from.type === "DFINITY" ||
+      from.type === "Casper"
     ) {
       setTxnStatus("completed");
     } else if (txn?.provider && txn?.hash) {

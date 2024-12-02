@@ -162,7 +162,8 @@ export class XPDecentralizedUtility {
     let res;
     if (nft.native?.amount) {
       console.log("locking sft", nft.amountToTransfer)
-      res = await originChain.lockSft(
+      res = await this.factory.lockSft(
+        originChain,
         signer,
         nft.contract || nft.collectionIdent,
         v3_ChainId[toChain?.nonce].name,
@@ -173,7 +174,8 @@ export class XPDecentralizedUtility {
       );
     } else {
       console.log("locking nft")
-      res = await originChain.lockNft(
+      res = await this.factory.lockNft(
+        originChain,
         signer,
         fromChain.nonce == 39 ? contract_hash : nft.contract || nft.collectionIdent,
         v3_ChainId[toChain?.nonce].name,

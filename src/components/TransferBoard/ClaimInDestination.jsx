@@ -141,7 +141,11 @@ export const ClaimInDestination = (connection) => {
         setDestHash(claimedHash);
       } catch (e) {
         console.log("in catch block", e);
-        dispatch(setError({ message: e.message }));
+        if (to?.type === "Casper" && e?.message?.includes("Mint error: 0")) {
+          dispatch(setError({ message: "Insufficient funds" }));
+        } else {
+          dispatch(setError({ message: e.message }));
+        }
         dispatch(setTransferLoaderModal(false));
       }
     };
