@@ -14,8 +14,8 @@ class Bridge {
     currentType;
     network;
 
-    getV3ChainIdenty(nonce){
-        return chains.find(item=>item.nonce === nonce)
+    getV3ChainIdenty(nonce) {
+        return chains.find(item => item.nonce === nonce)
     }
 
     getChainIdByKey(key, testnet) {
@@ -137,17 +137,17 @@ class Bridge {
                                 .filter((params) => params.v3_bridge)
                                 .map((p) => p.nonce)
                                 .includes(params.nonce): {
-                            this.chains[chainId] = new ChainInterface.V3_EVM(params);
-                            return this.chains[chainId];
-                        }
+                                this.chains[chainId] = new ChainInterface.V3_EVM(params);
+                                return this.chains[chainId];
+                            }
 
                         case Object.values(this.config)
                             .filter((params) => params.noWhitelist)
                             .map((p) => p.nonce)
                             .includes(params.nonce): {
-                            this.chains[chainId] = new ChainInterface.NoWhiteListEVM(params);
-                            return this.chains[chainId];
-                        }
+                                this.chains[chainId] = new ChainInterface.NoWhiteListEVM(params);
+                                return this.chains[chainId];
+                            }
 
                         case Chain.VECHAIN === params.nonce: {
                             this.chains[chainId] = new ChainInterface.VeChain(params);
@@ -178,7 +178,7 @@ class Bridge {
                 case ChainType.ALGORAND:
                     this.chains[chainId] = new ChainInterface.Algorand(params);
                     return this.chains[chainId];
-                case ChainType.TEZOS:{
+                case ChainType.TEZOS: {
                     const v3 =
                         v3_bridge_mode &&
                         Object.values(this.config)
@@ -228,7 +228,7 @@ class Bridge {
                     this.chains[chainId] = new ChainInterface.ICP(params);
                     return this.chains[chainId];
                 case ChainType.CASPER:
-                    this.chains[chainId] = new ChainInterface.Casper(params);
+                    this.chains[chainId] = new ChainInterface.V3_Casper(params);
                     return this.chains[chainId];
                 default:
                     throw new Error("unsuported chain");

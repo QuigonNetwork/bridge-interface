@@ -45,7 +45,7 @@ export class XPDecentralizedUtility {
     );
   };
   approveNFT_V3 = async (fromChain, nft) => {
-    const { tokenId, contract, amount } = nft.native;
+    const { tokenId, contract, amount, contract_hash } = nft.native;
 
     const signer = fromChain.getSigner();
     console.log({ fromChain, chain: v3_ChainId[fromChain.nonce].name });
@@ -60,7 +60,7 @@ export class XPDecentralizedUtility {
     }
     const nftType = amount ? "sft" : "nft"
     console.log("approving ", nftType)
-    await originChain.approveNft(signer, tokenId, contract, nftType);
+    await originChain.approveNft(signer, tokenId, fromChain.nonce === 39 ? contract_hash : contract, nftType);
 
     await sleep(TIME.TEN_SECONDS);
   };
@@ -120,7 +120,7 @@ export class XPDecentralizedUtility {
     };
   };
   lockNFT_V3 = async (fromChain, toChain, nft, receiver) => {
-    let { tokenId, name, symbol } = nft.native;
+    let { tokenId, name, symbol, contract_hash } = nft.native;
     if (fromChain.nonce === 28) {
       tokenId = BigInt(tokenId)
     }
@@ -175,7 +175,7 @@ export class XPDecentralizedUtility {
       console.log("locking nft")
       res = await originChain.lockNft(
         signer,
-        nft.contract || nft.collectionIdent,
+        fromChain.nonce == 39 ? contract_hash : nft.contract || nft.collectionIdent,
         v3_ChainId[toChain?.nonce].name,
         receiver,
         tokenId,
@@ -353,7 +353,8 @@ export class XPDecentralizedUtility {
       v3_ChainId[targetChainIdentifier?.nonce].name === "ICP" ||
       v3_ChainId[targetChainIdentifier?.nonce].name === "TEZOS" ||
       v3_ChainId[targetChainIdentifier?.nonce].name === "SECRET" ||
-      v3_ChainId[targetChainIdentifier?.nonce].name === "MULTIVERSX"
+      v3_ChainId[targetChainIdentifier?.nonce].name === "MULTIVERSX" ||
+      v3_ChainId[targetChainIdentifier?.nonce].name === "CASPER"
     ) {
       return {
         hash: claim?.hash(),

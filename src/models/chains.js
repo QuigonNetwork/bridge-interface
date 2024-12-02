@@ -1362,7 +1362,9 @@ class ICP extends AbstractChain {
     }*/
 }
 
-class Casper extends AbstractChain {
+class V3_Casper extends AbstractChain {
+  v3Bridge = true;
+
   constructor(params) {
     super(params);
   }
@@ -1396,7 +1398,7 @@ class Casper extends AbstractChain {
   async preParse(nft) {
     let metaData = undefined;
 
-    if (nft.native.metadata) {
+    if (nft.native.metadata?.asset) {
       metaData = {
         image: nft.native.metadata.asset,
         ...nft.native.metadata,
@@ -1433,6 +1435,10 @@ class Casper extends AbstractChain {
     };
   }
 
+  filterNFTs(nfts) {
+    return nfts;
+  }
+
   /*   async balance(address) {
         const bal = await this.chain.balance(address);
         console.log(bal, " casd");
@@ -1445,6 +1451,7 @@ export default {
   V3_EVM,
   V3_Multiversex,
   V3_TON,
+  V3_Casper,
   NoWhiteListEVM,
   VeChain,
   Elrond,
@@ -1459,5 +1466,4 @@ export default {
   APTOS,
   HEDERA,
   ICP,
-  Casper,
 };

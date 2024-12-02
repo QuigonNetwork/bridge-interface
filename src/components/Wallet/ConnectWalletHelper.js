@@ -324,3 +324,32 @@ export const connectKeplr = async (testnet, chain) => {
         return false;
     }
 };
+
+export const connectCasperWallet = async () => {
+    const { CasperWalletProvider } = window;
+    const account = {};
+
+    if (!CasperWalletProvider) {
+        return store.dispatch(
+            setError({
+                link: {
+                    href:
+                        "https://chrome.google.com/webstore/detail/casper-wallet/abkahkcbhngaebpcgfmhkoioedceoigp",
+                    text: "here",
+                },
+                message: "Install Casper Wallet",
+            })
+        );
+    }
+
+    const provider = CasperWalletProvider();
+
+    const connection = await provider.requestConnection(); //boolean
+
+    if (!connection) return store.dispatch(setError({ message: "Could not establish a connection" }));
+
+    account.address = await provider.getActivePublicKey();
+    account.signer = provider;
+
+    return account.signer
+}
