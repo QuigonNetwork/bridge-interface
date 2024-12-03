@@ -23344,7 +23344,7 @@ xmlhttprequest@1.8.0:
 
 "xp-decentralized-sdk@git+https://github.com/XP-NETWORK/xp-decentralized-client-library#bleeding-edge":
   version "1.0.0"
-  resolved "git+https://github.com/XP-NETWORK/xp-decentralized-client-library#8b3c550b5adb28b3b1aa8dfa5370dea16ace7555"
+  resolved "git+https://github.com/XP-NETWORK/xp-decentralized-client-library#580602b779f2124be9d3cf20025181a340df7e20"
   dependencies:
     "@aptos-labs/ts-sdk" "^1.22.2"
     "@cosmjs/amino" "^0.32.3"
