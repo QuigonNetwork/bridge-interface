@@ -39,7 +39,7 @@ function WalletSelector({ close }) {
     else return {};
   };
 
-  return window.wallet_selector_modal ? (
+  return (
     <li
       style={getStyle()}
       onClick={connectHandler}
@@ -49,7 +49,7 @@ function WalletSelector({ close }) {
       <img style={{ width: "28px" }} src={near} alt="nearWallet" />
       <p>Wallet Selector</p>
     </li>
-  ) : null;
+  );
 }
 
 WalletSelector.propTypes = {
