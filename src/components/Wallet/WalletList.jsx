@@ -379,7 +379,7 @@ export default function WalletList({ connected, input, discount }) {
       order: 888,
       type: "NEAR",
       keyName: "Wallet Selector",
-      isDisabled: true,
+      isDisabled: false,
     },
     {
       Component: <Phantom key="Phantom" close={connected} />,

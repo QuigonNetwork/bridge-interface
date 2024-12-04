@@ -140,7 +140,8 @@ export const v3_ChainId = {
   43: { name: "BASE", type: "EVM" },
   28: { name: 'ICP', type: "DFINITY" },
   45: { name: 'BLAST', type: "EVM" },
-}
+  31: { name: "NEAR", type: "NEAR" },
+};
 
 export const v3_getChainNonce = {
   "MULTIVERSX": 2,
@@ -158,5 +159,6 @@ export const v3_getChainNonce = {
   'ABEYCHAIN': 33,
   'CASPER': 39,
   'BASE': 43,
+  'NEAR': 31,
   'BLAST': 45,
 }

@@ -13,6 +13,8 @@ import { TempleWallet } from "@temple-wallet/dapp";
 import { connectExtension } from "./components/Wallet/MultiversXWallet/HigherMultiversX";
 import { connectPlugWallet } from "./components/Wallet/IcpConnections";
 import { connectCasperWallet, connectKeplr } from "./components/Wallet/ConnectWalletHelper";
+import { connectMyNearWallet } from "./components/Wallet/ConnectWalletHelper";
+import { XPDecentralizedUtility } from "./utils/xpDecentralizedUtility";
 
 /*const testnet = window.location.pathname.includes("testnet");
 const staging = window.location.pathname.includes("staging");
@@ -350,6 +352,13 @@ const connectWallet = {
     const chainWrapper = await bridge.getChain(nonce);
     const signer = await connectCasperWallet();
     chainWrapper.setSigner(signer);
+  },
+  NEAR: async (bridge, nonce) => {
+    const chainWrapper = await bridge.getChain(nonce);
+    const xpDecentralizedUtility = new XPDecentralizedUtility();
+    const nearParams = xpDecentralizedUtility.config.nearParams;
+    const signer = await connectMyNearWallet(nearParams?.bridge, chainWrapper); // Connect to the ICP wallet and get the signer
+    chainWrapper.setSigner(signer); // Set the signer in the chainWrapper
   }
 };
 
@@ -384,6 +393,9 @@ export const connectWalletByChain = async (
       await connectWallet[type](bridge, nonce);
       break;
     case "CASPER":
+      await connectWallet[type](bridge, nonce);
+      break;
+    case "NEAR":
       await connectWallet[type](bridge, nonce);
       break;
   }

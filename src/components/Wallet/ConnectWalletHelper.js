@@ -16,11 +16,15 @@ import {
     setWC,
     setAccount,
     setRedirectModal,
+    setTransferLoaderModal,
 } from "../../store/reducers/generalSlice";
 
 import { MainNetRpcUri, TestNetRpcUri } from "xp.network";
 import { switchNetwork } from "../../services/chains/evm/evmService";
 import { promisify } from "../../utils";
+import { adaptToWalletSelector } from "./NEARWallet/utils";
+import { setupWalletSelector } from "@near-wallet-selector/core";
+import { setupSender } from "@near-wallet-selector/sender";
 
 export const wallets = [
     "MetaMask",
@@ -353,3 +357,35 @@ export const connectCasperWallet = async () => {
 
     return account.signer
 }
+
+export const connectMyNearWallet = async (contract, chainWrapper) => {
+    try {
+        if (!window.near) {
+            store.dispatch(
+                setError({
+                    message: "Please install Sender Wallet extension",
+                })
+            );
+            store.dispatch(setTransferLoaderModal(false));
+            return false
+        }
+        const selector = await setupWalletSelector({
+            network: window.location.pathname.includes("testnet")
+                ? "testnet"
+                : "mainnet",
+            debug: true,
+            modules: [
+                setupSender(),
+            ],
+        })
+        const wallet = await selector.wallet("sender");
+        await wallet.signIn({ contractId: contract });
+        return adaptToWalletSelector(
+            wallet,
+            chainWrapper.chain.getProvider(),
+        )
+    } catch (error) {
+        console.error(error);
+        return false;
+    }
+};

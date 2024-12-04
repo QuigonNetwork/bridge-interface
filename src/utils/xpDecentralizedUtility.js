@@ -12,8 +12,13 @@ export class XPDecentralizedUtility {
     isTestnet ? ChainFactoryConfigs.TestNet() : ChainFactoryConfigs.MainNet()
   );
 
+  config;
+
   constructor() {
     this.isV3Enabled = v3_bridge_mode;
+    this.config = isTestnet
+      ? ChainFactoryConfigs.TestNet()
+      : ChainFactoryConfigs.MainNet();
   }
 
   approveNFT = async (
@@ -45,8 +50,8 @@ export class XPDecentralizedUtility {
     );
   };
   approveNFT_V3 = async (fromChain, nft) => {
-    const { tokenId, contract, amount, contract_hash } = nft.native;
-
+    const { tokenId, amount, contract_hash } = nft.native;
+    const contract = nft.native?.contract || nft.contract;
     const signer = fromChain.getSigner();
     console.log({ fromChain, chain: v3_ChainId[fromChain.nonce].name });
 
@@ -58,9 +63,14 @@ export class XPDecentralizedUtility {
       const sdk = await import("@hashgraph/sdk");
       originChain.injectSDK(sdk);
     }
-    const nftType = amount ? "sft" : "nft"
-    console.log("approving ", nftType)
-    await originChain.approveNft(signer, tokenId, fromChain.nonce === 39 ? contract_hash : contract, nftType);
+    const nftType = amount ? "sft" : "nft";
+    console.log("approving ", nftType);
+    await originChain.approveNft(
+      signer,
+      tokenId,
+      fromChain.nonce === 39 ? contract_hash : contract,
+      nftType
+    );
 
     await sleep(TIME.TEN_SECONDS);
   };
@@ -69,8 +79,8 @@ export class XPDecentralizedUtility {
     const destChain = await this.getChainFromFactory(
       v3_ChainId[chainNonce].name
     );
-    return await destChain.validateNftData(data)
-  }
+    return await destChain.validateNftData(data);
+  };
 
   lockNFT = async (
     fromChain,
@@ -122,7 +132,7 @@ export class XPDecentralizedUtility {
   lockNFT_V3 = async (fromChain, toChain, nft, receiver) => {
     let { tokenId, name, symbol, contract_hash } = nft.native;
     if (fromChain.nonce === 28) {
-      tokenId = BigInt(tokenId)
+      tokenId = BigInt(tokenId);
     }
     const signer = fromChain.getSigner();
 
@@ -149,19 +159,19 @@ export class XPDecentralizedUtility {
     }
     // send nonce as token id for mx
     if (fromChain.nonce === 2) {
-      tokenId = nft?.native?.nonce || tokenId
+      tokenId = nft?.native?.nonce || tokenId;
     }
     // validate collection name and symbol for mx
     if (toChain?.nonce === 2 && !nft.native?.amount) {
       await this.validateNftData(toChain?.nonce, {
         name,
-        symbol
-      })
+        symbol,
+      });
     }
     console.log("originChain", originChain);
     let res;
     if (nft.native?.amount) {
-      console.log("locking sft", nft.amountToTransfer)
+      console.log("locking sft", nft.amountToTransfer);
       res = await this.factory.lockSft(
         originChain,
         signer,
@@ -170,18 +180,20 @@ export class XPDecentralizedUtility {
         receiver,
         tokenId,
         nft.amountToTransfer,
-        nft.uri,
+        nft.uri
       );
     } else {
-      console.log("locking nft")
+      console.log("locking nft");
       res = await this.factory.lockNft(
         originChain,
         signer,
-        fromChain.nonce == 39 ? contract_hash : nft.contract || nft.collectionIdent,
+        fromChain.nonce == 39
+          ? contract_hash
+          : nft.contract || nft.collectionIdent,
         v3_ChainId[toChain?.nonce].name,
         receiver,
         tokenId,
-        nft.uri,
+        nft.uri
         // {
         //   gasLimit: 5_000_000
         // }
@@ -218,11 +230,11 @@ export class XPDecentralizedUtility {
       signatures = window.sigs
         ? window.sigs
         : await targetChain
-          .getStorageContract()
-          .getLockNftSignatures(
-            hash,
-            v3_ChainId[originChainIdentifier.nonce].name
-          );
+            .getStorageContract()
+            .getLockNftSignatures(
+              hash,
+              v3_ChainId[originChainIdentifier.nonce].name
+            );
       console.log("inside loop signatures: ", signatures);
       console.log(
         "inside loop validatorCount: ",
@@ -328,21 +340,21 @@ export class XPDecentralizedUtility {
     }
     console.log("transformed data", targetChain.transform(nftData));
     if (nftData.nftType === "multiple") {
-      console.log("claiming sft", nftData?.tokenAmount)
+      console.log("claiming sft", nftData?.tokenAmount);
       claim = await targetChain.claimSft(
         targetChainSigner,
         targetChain.transform(nftData),
-        signatures,
+        signatures
         // {
         //   gasLimit: 5_000_000
         // }
       );
     } else {
-      console.log("claiming nft")
+      console.log("claiming nft");
       claim = await targetChain.claimNft(
         targetChainSigner,
         targetChain.transform(nftData),
-        signatures,
+        signatures
         // {
         //   gasLimit: 5_000_000
         // }
@@ -356,16 +368,17 @@ export class XPDecentralizedUtility {
       v3_ChainId[targetChainIdentifier?.nonce].name === "TEZOS" ||
       v3_ChainId[targetChainIdentifier?.nonce].name === "SECRET" ||
       v3_ChainId[targetChainIdentifier?.nonce].name === "MULTIVERSX" ||
-      v3_ChainId[targetChainIdentifier?.nonce].name === "CASPER"
+      v3_ChainId[targetChainIdentifier?.nonce].name === "CASPER" ||
+      v3_ChainId[targetChainIdentifier?.nonce].name === "NEAR"
     ) {
       return {
         hash: claim?.hash(),
-        nftType: nftData.nftType
+        nftType: nftData.nftType,
       };
     }
     return {
       ...claim?.ret,
-      nftType: nftData.nftType
+      nftType: nftData.nftType,
     };
   };
 
@@ -401,34 +414,34 @@ export class XPDecentralizedUtility {
     const originChain = await this.getChainFromFactory(
       v3_ChainId[chainNonce].name
     );
-    return originChain.getTransactionStatus(txHash)
-  }
+    return originChain.getTransactionStatus(txHash);
+  };
   readClaimed721Event = async (destChainIdentifier, hash) => {
     const destChain = await this.getChainFromFactory(
       v3_ChainId[destChainIdentifier?.nonce].name
     );
-    return await destChain.readClaimed721Event(hash)
-  }
+    return await destChain.readClaimed721Event(hash);
+  };
 
   readClaimed1155Event = async (destChainIdentifier, hash) => {
     const destChain = await this.getChainFromFactory(
       v3_ChainId[destChainIdentifier?.nonce].name
     );
-    return await destChain.readClaimed1155Event(hash)
-  }
+    return await destChain.readClaimed1155Event(hash);
+  };
 
   nftList = async (chainNonce, address, contract, extraArgs) => {
     const destChain = await this.getChainFromFactory(
       v3_ChainId[chainNonce].name
     );
-    return destChain.nftList(address, contract, extraArgs)
+    return destChain.nftList(address, contract, extraArgs);
   };
 
   getBalance = async (chainNonce, signer) => {
     const destChain = await this.getChainFromFactory(
       v3_ChainId[chainNonce].name
     );
-    const res = await destChain.getBalance(signer)
+    const res = await destChain.getBalance(signer);
     const decimals = CHAIN_INFO.get(chainNonce)?.decimals;
     return Number(res) / decimals;
   };
@@ -437,10 +450,6 @@ export class XPDecentralizedUtility {
     const destChain = await this.getChainFromFactory(
       v3_ChainId[chainNonce].name
     );
-    return destChain.setViewingKey(
-      signer,
-      contract,
-      viewKey
-    )
-  }
+    return destChain.setViewingKey(signer, contract, viewKey);
+  };
 }

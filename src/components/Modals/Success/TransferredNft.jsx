@@ -93,7 +93,8 @@ const TransferredNft = ({
             from.type !== "Hedera" &&
             from.type !== "DFINITY" &&
             from.type !== "Tezos" &&
-            from.type !== "Casper"
+            from.type !== "Casper" &&
+            from.type !== "NEAR"
           ) {
             if (from.value === "Secret") {
               if (tx?.code === 0) {
@@ -163,7 +164,8 @@ const TransferredNft = ({
       from.type === "Hedera" ||
       from.type === "Tezos" ||
       from.type === "DFINITY" ||
-      from.type === "Casper"
+      from.type === "Casper" ||
+      from.type === "NEAR"
     ) {
       setTxnStatus("completed");
     } else if (txn?.provider && txn?.hash) {
@@ -186,6 +188,7 @@ const TransferredNft = ({
   );
   const completed = Boolean(
     (to.type === "TON" && txnStatus === "completed") ||
+      (to.type === "NEAR" && txnStatus === "completed") ||
       (to.type === "Hedera" && txnStatus === "completed") ||
       (v3BridgeTx && txnStatus !== "claimed") ||
       (to.type === "Tezos" && txnStatus === "completed") ||
