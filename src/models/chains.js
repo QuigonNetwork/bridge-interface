@@ -499,6 +499,8 @@ class EVM extends AbstractChain {
 }
 
 class VeChain extends AbstractChain {
+  v3Bridge = true;
+
   constructor(params) {
     super(params);
   }

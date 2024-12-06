@@ -236,7 +236,7 @@ export default function WalletList({ connected, input, discount }) {
       desktop: true,
       order: 12,
       keyName: "Sync2",
-      isDisabled: true,
+      isDisabled: false,
     },
     {
       Component: (

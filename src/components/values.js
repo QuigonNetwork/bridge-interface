@@ -464,8 +464,8 @@ export const chains = [
         image: { avatar: true, src: VET },
         maintenance: false,
         mainnet: true,
-        testNet: false,
-        isDisabled: true,
+        testNet: true,
+        isDisabled: false,
     },
     {
         type: "Cosmos",
