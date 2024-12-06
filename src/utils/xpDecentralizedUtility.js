@@ -193,7 +193,7 @@ export class XPDecentralizedUtility {
         v3_ChainId[toChain?.nonce].name,
         receiver,
         tokenId,
-        nft.uri
+        nft.uri || ""
         // {
         //   gasLimit: 5_000_000
         // }
