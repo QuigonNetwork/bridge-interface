@@ -41,7 +41,6 @@ export const withNearConnection = (Wrapped) =>
     //const [accounts, setAccounts] = useState([]);
     const dispatch = useDispatch();
     const navigate = useNavigate();
-    const xpDecentralizedUtility = new XPDecentralizedUtility();
 
     const saveWallet = (address, bridge, chain, signer) => {
       dispatch(setAccount(address));
@@ -69,9 +68,11 @@ export const withNearConnection = (Wrapped) =>
       params.get("type") === "transfer" || params.get("type") === "unfreeze";
     // Selector store flow
     useEffect(() => {
-      if (serviceContainer.bridge.config) {
+      if (serviceContainer.bridge?.config) {
         const { bridge } = serviceContainer;
         (async () => {
+          const xpDecentralizedUtility = await XPDecentralizedUtility.create();
+          console.log({ xpDecentralizedUtility });
           const nearParams = xpDecentralizedUtility.config.nearParams;
           // const url = window.location.href;
           const [_selector, chainWrapper] = await Promise.all([

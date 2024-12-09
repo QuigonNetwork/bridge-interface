@@ -40,7 +40,7 @@ function Approval({ serviceContainer }) {
   const approveEach = async (nft, index) => {
     const arr = new Array(index + 1).fill(0);
     const fromChain = await bridge.getChain(from.nonce);
-    const xPDecentralizedUtility = new XPDecentralizedUtility();
+    const xPDecentralizedUtility = await XPDecentralizedUtility.create();
 
     try {
       const { tokenId, contract, chainId } = nft.native;
@@ -48,7 +48,7 @@ function Approval({ serviceContainer }) {
         ({ native }) =>
           native.tokenId === tokenId &&
           native.contract === contract &&
-          chainId === native.chainId
+          chainId === native.chainId,
       );
 
       if (!alreadyApproved) {
@@ -57,7 +57,7 @@ function Approval({ serviceContainer }) {
           nft,
           to,
           bigNumberFees,
-          receiver
+          receiver,
         );
 
         dispatch(updateApprovedNFTs(nft));
@@ -91,7 +91,7 @@ function Approval({ serviceContainer }) {
       setFinishedApproving([]);
       handleGA4Event(
         googleAnalyticsCategories.Approve,
-        `Approving ${selectedNFTList.length}`
+        `Approving ${selectedNFTList.length}`,
       );
       selectedNFTList.forEach((nft, index) => {
         approveEach(nft, index);

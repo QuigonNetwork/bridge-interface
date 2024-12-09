@@ -9,10 +9,9 @@ import { XPDecentralizedUtility } from "../../../utils/xpDecentralizedUtility";
 
 export const withNear = (Wrapped) =>
   function CBU(props) {
-    const xpDecentralizedUtility = new XPDecentralizedUtility();
-    const nearParams = xpDecentralizedUtility.config.nearParams;
-
     const connectionCallback = async (bridge) => {
+      const xpDecentralizedUtility = await XPDecentralizedUtility.create();
+      const nearParams = xpDecentralizedUtility.config.nearParams;
       const chainWrapper = await bridge.getChain(Chain.NEAR);
       const signer = await connectMyNearWallet(
         nearParams?.bridge,

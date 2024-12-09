@@ -8,17 +8,21 @@ import { CHAIN_INFO } from "xp.network";
 
 export class XPDecentralizedUtility {
   isV3Enabled = false;
-  factory = ChainFactory(
-    isTestnet ? ChainFactoryConfigs.TestNet() : ChainFactoryConfigs.MainNet()
-  );
-
+  factory;
   config;
 
-  constructor() {
-    this.isV3Enabled = v3_bridge_mode;
-    this.config = isTestnet
-      ? ChainFactoryConfigs.TestNet()
-      : ChainFactoryConfigs.MainNet();
+  static async create() {
+    const instance = new XPDecentralizedUtility();
+    // instance.factory = await instance.fetchData();
+    instance.factory = ChainFactory(
+      isTestnet ? await ChainFactoryConfigs.TestNet() : await ChainFactoryConfigs.MainNet()
+    );
+    instance.config = isTestnet
+      ? await ChainFactoryConfigs.TestNet()
+      : await ChainFactoryConfigs.MainNet();
+    instance.isV3Enabled = v3_bridge_mode;
+
+    return instance;
   }
 
   approveNFT = async (
@@ -230,11 +234,11 @@ export class XPDecentralizedUtility {
       signatures = window.sigs
         ? window.sigs
         : await targetChain
-            .getStorageContract()
-            .getLockNftSignatures(
-              hash,
-              v3_ChainId[originChainIdentifier.nonce].name
-            );
+          .getStorageContract()
+          .getLockNftSignatures(
+            hash,
+            v3_ChainId[originChainIdentifier.nonce].name
+          );
       console.log("inside loop signatures: ", signatures);
       console.log(
         "inside loop validatorCount: ",

@@ -38,11 +38,11 @@ export default withServices(function ButtonToTransfer({ serviceContainer }) {
   const _from = useSelector((state) => state.general.from);
   const bigNumberFees = useSelector((state) => state.general.bigNumberFees);
   const receiverIsContract = useSelector(
-    (state) => state.general.receiverIsContract
+    (state) => state.general.receiverIsContract,
   );
 
   const bigNumberDeployFees = useSelector(
-    (state) => state.general.bigNumberDeployFees
+    (state) => state.general.bigNumberDeployFees,
   );
 
   const [loading, setLoading] = useState();
@@ -60,7 +60,7 @@ export default withServices(function ButtonToTransfer({ serviceContainer }) {
             setError({
               message:
                 "Your domain does not explicitly support the chain you selected.",
-            })
+            }),
           );
           dispatch(setTransferLoaderModal(false));
           setLoading(false);
@@ -71,7 +71,7 @@ export default withServices(function ButtonToTransfer({ serviceContainer }) {
             setError({
               message:
                 "Domain names are currently not supported for Non-EVM chains.",
-            })
+            }),
           );
           dispatch(setTransferLoaderModal(false));
           setLoading(false);
@@ -81,7 +81,7 @@ export default withServices(function ButtonToTransfer({ serviceContainer }) {
           dispatch(
             setError({
               message: "Domain does not exist. Please, check the spelling.",
-            })
+            }),
           );
           dispatch(dispatch(setTransferLoaderModal(false)));
           setLoading(false);
@@ -97,7 +97,7 @@ export default withServices(function ButtonToTransfer({ serviceContainer }) {
   const sendAllNFTs = async () => {
     handleGA4Event(
       googleAnalyticsCategories.Transfer,
-      `${receiver} trying to transfer ${selectedNFTList.length} nfts`
+      `${receiver} trying to transfer ${selectedNFTList.length} nfts`,
     );
     if (!receiver) {
       dispatch(setPasteDestinationAlert(true));
@@ -124,7 +124,7 @@ export default withServices(function ButtonToTransfer({ serviceContainer }) {
     ]);
 
     try {
-      const xPDecentralizedUtility = new XPDecentralizedUtility();
+      const xPDecentralizedUtility = await XPDecentralizedUtility.create();
       const unstoppabledomain = await getFromDomain(receiver, toChain);
       if (unstoppabledomainSwitch(unstoppabledomain)) return;
 
@@ -133,8 +133,8 @@ export default withServices(function ButtonToTransfer({ serviceContainer }) {
         .div(isTestnet && biz ? 10 : dev ? 3 : 1)
         .plus(
           new BigNumber(bigNumberDeployFees || 0).div(
-            isTestnet && biz ? 10 : dev ? 4 : 1
-          )
+            isTestnet && biz ? 10 : dev ? 4 : 1,
+          ),
         )
         .integerValue()
         .toString(10);
@@ -146,7 +146,7 @@ export default withServices(function ButtonToTransfer({ serviceContainer }) {
         unstoppabledomain || normalizedReceiver,
         fee,
         discountLeftUsd,
-        account
+        account,
       );
 
       const mw = toChain.showMintWith && (mintWith || toChain.XpNft);
@@ -159,7 +159,7 @@ export default withServices(function ButtonToTransfer({ serviceContainer }) {
       }
       handleGA4Event(
         googleAnalyticsCategories.Transfer,
-        `${receiver} Success transfer`
+        `${receiver} Success transfer`,
       );
     } catch (e) {
       console.log(e);
@@ -167,7 +167,7 @@ export default withServices(function ButtonToTransfer({ serviceContainer }) {
       dispatch(setError(resultError));
       handleGA4Event(
         googleAnalyticsCategories.Transfer,
-        `${receiver} Failed transfer`
+        `${receiver} Failed transfer`,
       );
     }
 
