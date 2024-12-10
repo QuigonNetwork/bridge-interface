@@ -153,7 +153,7 @@ export const v3_getChainNonce = {
   'FANTOM': 8,
   'TEZOS': 18,
   'SECRET': 24,
-  'VECHAIN': 24,
+  'VECHAIN': 25,
   'TON': 27,
   'HEDERA': 29,
   'ICP': 28,

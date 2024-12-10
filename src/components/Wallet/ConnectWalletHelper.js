@@ -25,6 +25,9 @@ import { promisify } from "../../utils";
 import { adaptToWalletSelector } from "./NEARWallet/utils";
 import { setupWalletSelector } from "@near-wallet-selector/core";
 import { setupSender } from "@near-wallet-selector/sender";
+import { Connex } from "@vechain/connex";
+import * as thor from "web3-providers-connex";
+import { ethers } from "ethers";
 
 export const wallets = [
     "MetaMask",
@@ -388,4 +391,38 @@ export const connectMyNearWallet = async (contract, chainWrapper) => {
         console.error(error);
         return false;
     }
+};
+
+
+export const connectVeChainWallet = async () => {
+    const testnet = window.location.pathname.includes("testnet")
+    const account = {};
+    const connex = new Connex({
+        node: testnet ? TestNetRpcUri.VECHAIN : MainNetRpcUri.VECHAIN,
+        network: testnet ? "test" : "main",
+    });
+
+    const connection = await connex.vendor
+        .sign("cert", {
+            purpose: "identification",
+            payload: {
+                type: "text",
+                content: "Sign certificate to continue bridging",
+            },
+        })
+        .link("https://connex.vecha.in/{certid}")
+        .request();
+
+    account.address = connection?.annex?.signer;
+
+    const provider = thor.ethers.modifyProvider(
+        new ethers.providers.Web3Provider(
+            new thor.ConnexProvider({
+                connex,
+            })
+        )
+    );
+    const signer = await provider.getSigner(account.address);
+    account.signer = signer;
+    return account;
 };

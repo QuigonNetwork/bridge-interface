@@ -15,6 +15,7 @@ import { useWeb3React } from "@web3-react/core";
 import { getChainObject, v3_bridge_mode } from "../../values";
 import { switchNetwork } from "../../../services/chains/evm/evmService";
 import { sleep } from "../../../utils";
+import { connectVeChainWallet } from "../../Wallet/ConnectWalletHelper";
 
 export const withEVM = (Wrapped) =>
   function CBU(props) {
@@ -28,11 +29,19 @@ export const withEVM = (Wrapped) =>
     const { activate } = useWeb3React();
 
     const connectionCallback = async (bridge, toChain) => {
-      bridge.currentType === "EVM"
-        ? await switchNetwork(getChainObject(toChain))
-        : (await activate(injected),
-          await switchNetwork(getChainObject(toChain)));
-      await sleep(3000);
+      const chain = getChainObject(toChain);
+      let chainWapper = await bridge.getChain(toChain);
+
+      if (chain.type === "VeChain") {
+        const account = await connectVeChainWallet();
+        chainWapper.setSigner(account.signer);
+        return chainWapper;
+      } else {
+        bridge.currentType === "EVM"
+          ? await switchNetwork(chain)
+          : (await activate(injected), await switchNetwork(chain));
+        await sleep(3000);
+      }
 
       if (v3_bridge_mode) {
         return;
@@ -40,7 +49,6 @@ export const withEVM = (Wrapped) =>
 
       return await new Promise((r) => {
         (async () => {
-          let chainWapper = await bridge.getChain(toChain);
           while (!chainWapper.signer) {
             chainWapper = await bridge.getChain(toChain);
             await new Promise((r) => setTimeout(r, 2000));

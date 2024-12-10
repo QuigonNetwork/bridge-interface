@@ -12,7 +12,7 @@ import { injected } from "./wallet/connectors";
 import { TempleWallet } from "@temple-wallet/dapp";
 import { connectExtension } from "./components/Wallet/MultiversXWallet/HigherMultiversX";
 import { connectPlugWallet } from "./components/Wallet/IcpConnections";
-import { connectCasperWallet, connectKeplr } from "./components/Wallet/ConnectWalletHelper";
+import { connectCasperWallet, connectKeplr, connectVeChainWallet } from "./components/Wallet/ConnectWalletHelper";
 import { connectMyNearWallet } from "./components/Wallet/ConnectWalletHelper";
 import { XPDecentralizedUtility } from "./utils/xpDecentralizedUtility";
 
@@ -359,6 +359,11 @@ const connectWallet = {
     const nearParams = xpDecentralizedUtility.config.nearParams;
     const signer = await connectMyNearWallet(nearParams?.bridge, chainWrapper); // Connect to the ICP wallet and get the signer
     chainWrapper.setSigner(signer); // Set the signer in the chainWrapper
+  },
+  VECHAIN: async (bridge, nonce) => {
+    const chainWrapper = await bridge.getChain(nonce);
+    const account = await connectVeChainWallet();
+    chainWrapper.setSigner(account.signer);
   }
 };
 
@@ -396,6 +401,9 @@ export const connectWalletByChain = async (
       await connectWallet[type](bridge, nonce);
       break;
     case "NEAR":
+      await connectWallet[type](bridge, nonce);
+      break;
+    case "VECHAIN":
       await connectWallet[type](bridge, nonce);
       break;
   }
