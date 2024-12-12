@@ -860,8 +860,8 @@ class Cosmos extends AbstractChain {
       metaData: !nft?.uri
         ? {
           ...nft?.native.metadata,
-          image: nft?.native.metadata?.media[0]?.url,
-          imageFormat: nft?.native.metadata?.media[0]?.extension,
+          image: nft?.native.metadata?.media?.[0]?.url,
+          imageFormat: nft?.native.metadata?.media?.[0]?.extension,
         }
         : null,
     }));
