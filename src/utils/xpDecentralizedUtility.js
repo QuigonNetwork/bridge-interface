@@ -230,11 +230,11 @@ export class XPDecentralizedUtility {
       signatures = window.sigs
         ? window.sigs
         : await targetChain
-            .getStorageContract()
-            .getLockNftSignatures(
-              hash,
-              v3_ChainId[originChainIdentifier.nonce].name
-            );
+          .getStorageContract()
+          .getLockNftSignatures(
+            hash,
+            v3_ChainId[originChainIdentifier.nonce].name
+          );
       console.log("inside loop signatures: ", signatures);
       console.log(
         "inside loop validatorCount: ",
@@ -344,20 +344,20 @@ export class XPDecentralizedUtility {
       claim = await targetChain.claimSft(
         targetChainSigner,
         targetChain.transform(nftData),
-        signatures
-        // {
-        //   gasLimit: 5_000_000
-        // }
+        signatures,
+        {
+          gasLimit: 5_000_000
+        }
       );
     } else {
       console.log("claiming nft");
       claim = await targetChain.claimNft(
         targetChainSigner,
         targetChain.transform(nftData),
-        signatures
-        // {
-        //   gasLimit: 5_000_000
-        // }
+        signatures,
+        {
+          gasLimit: 5_000_000
+        }
       );
     }
     console.log("claimed: ", claim);
