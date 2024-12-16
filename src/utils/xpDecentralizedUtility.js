@@ -2,7 +2,7 @@ import { ChainFactory, ChainFactoryConfigs } from "xp-decentralized-sdk";
 import { sleep } from "../utils";
 import { TIME } from "../constants/time";
 import { isTestnet, v3_bridge_mode } from "../components/values";
-import { Chain, v3_ChainId, v3_getChainNonce } from "./chainsTypes";
+import { v3_ChainId, v3_getChainNonce } from "./chainsTypes";
 import { ethers } from "ethers";
 import { CHAIN_INFO } from "xp.network";
 
@@ -342,12 +342,6 @@ export class XPDecentralizedUtility {
       const sdk = await import("@hashgraph/sdk");
       targetChain.injectSDK(sdk);
     }
-    let extraArgs;
-    if (targetChainIdentifier.nonce === Chain.VECHAIN) {
-      extraArgs = {
-        gasLimit: 5_000_000
-      }
-    }
     console.log("transformed data", targetChain.transform(nftData));
     if (nftData.nftType === "multiple") {
       console.log("claiming sft", nftData?.tokenAmount);
@@ -355,7 +349,9 @@ export class XPDecentralizedUtility {
         targetChainSigner,
         targetChain.transform(nftData),
         signatures,
-        extraArgs
+        {
+          gasLimit: 5_000_000
+        }
       );
     } else {
       console.log("claiming nft");
@@ -363,7 +359,9 @@ export class XPDecentralizedUtility {
         targetChainSigner,
         targetChain.transform(nftData),
         signatures,
-        extraArgs
+        {
+          gasLimit: 5_000_000
+        }
       );
     }
     console.log("claimed: ", claim);

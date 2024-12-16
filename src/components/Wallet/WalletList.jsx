@@ -268,7 +268,7 @@ export default function WalletList({ connected, input, discount }) {
       desktop: true,
       order: 14,
       keyName: "Keplr",
-      isDisabled: true,
+      isDisabled: false,
     },
     {
       Component: (
