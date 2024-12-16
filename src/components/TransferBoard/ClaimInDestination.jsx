@@ -65,7 +65,7 @@ export const ClaimInDestination = (connection) => {
       dispatch(setQuietConnection(true));
       dispatch(setTransferLoaderModal(true));
 
-      const xPDecentralizedUtility = new XPDecentralizedUtility();
+      const xPDecentralizedUtility = await XPDecentralizedUtility.create();
 
       const chainWapper = await connection(bridge, toChain);
       // if (to.text === "Hedera" && destWalletAddress.includes(".")) {
@@ -181,7 +181,7 @@ export const ClaimInDestination = (connection) => {
       try {
         const originChainIdentifier = await bridge.getChain(fromChain);
 
-        const xPDecentralizedUtility = new XPDecentralizedUtility();
+        const xPDecentralizedUtility = await XPDecentralizedUtility.create();
 
         const { hash: claimedHash } = await xPDecentralizedUtility.claimNFT(
           originChainIdentifier,

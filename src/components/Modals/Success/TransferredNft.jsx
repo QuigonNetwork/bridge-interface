@@ -64,7 +64,6 @@ const TransferredNft = ({
 
   const depText = window.innerWidth <= 600 ? "Dep" : "Departure Hash";
   const desText = window.innerWidth <= 600 ? "Des" : "Destination Hash";
-  const xPDecentralizedUtility = new XPDecentralizedUtility();
 
   const RenderClaimInDestination =
     chainSpecificRender?.RenderClaimInDestination;
@@ -146,16 +145,18 @@ const TransferredNft = ({
 
   useEffect(() => {
     if (txn && from.type === "Elrond") {
-      xPDecentralizedUtility
-        .getTransactionStatus(from.nonce, txn.hash)
-        .then((res) => {
-          if (res === "success") {
-            setTxnStatus("completed");
-          }
-        })
-        .catch((err) => {
-          console.log("error: ", err);
-        });
+      XPDecentralizedUtility.create().then((xPDecentralizedUtility) => {
+        xPDecentralizedUtility
+          .getTransactionStatus(from.nonce, txn.hash)
+          .then((res) => {
+            if (res === "success") {
+              setTxnStatus("completed");
+            }
+          })
+          .catch((err) => {
+            console.log("error: ", err);
+          });
+      });
     }
   }, []);
 

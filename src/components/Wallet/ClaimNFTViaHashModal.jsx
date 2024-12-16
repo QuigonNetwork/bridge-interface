@@ -18,8 +18,6 @@ import { getChainObject } from "../values";
 import { TIME } from "../../constants/time";
 
 export default function ClaimNFTViaHashModal({ handleClose, bridge }) {
-  const xpDecentralizedUtility = new XPDecentralizedUtility();
-
   const [hash, setHash] = useState("");
   const dispatch = useDispatch();
 
@@ -46,6 +44,7 @@ export default function ClaimNFTViaHashModal({ handleClose, bridge }) {
   }, [hash, origin]);
 
   const getNFTData = async () => {
+    const xpDecentralizedUtility = await XPDecentralizedUtility.create();
     const originChain = await xpDecentralizedUtility.getChainFromFactory(
       v3_ChainId[origin.nonce].name,
     );
@@ -83,6 +82,7 @@ export default function ClaimNFTViaHashModal({ handleClose, bridge }) {
       const targetChainIdentifier = await bridge.getChain(
         v3_getChainNonce[nftData.destinationChain],
       );
+      const xpDecentralizedUtility = await XPDecentralizedUtility.create();
 
       if (nftData.destinationChain === "HEDERA" && !isAssociated) {
         console.log("inside association");

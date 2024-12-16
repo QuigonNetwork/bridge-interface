@@ -2,23 +2,27 @@ import { ChainFactory, ChainFactoryConfigs } from "xp-decentralized-sdk";
 import { sleep } from "../utils";
 import { TIME } from "../constants/time";
 import { isTestnet, v3_bridge_mode } from "../components/values";
-import { v3_ChainId, v3_getChainNonce } from "./chainsTypes";
+import { Chain, v3_ChainId, v3_getChainNonce } from "./chainsTypes";
 import { ethers } from "ethers";
 import { CHAIN_INFO } from "xp.network";
 
 export class XPDecentralizedUtility {
   isV3Enabled = false;
-  factory = ChainFactory(
-    isTestnet ? ChainFactoryConfigs.TestNet() : ChainFactoryConfigs.MainNet()
-  );
-
+  factory;
   config;
 
-  constructor() {
-    this.isV3Enabled = v3_bridge_mode;
-    this.config = isTestnet
-      ? ChainFactoryConfigs.TestNet()
-      : ChainFactoryConfigs.MainNet();
+  static async create() {
+    const instance = new XPDecentralizedUtility();
+    // instance.factory = await instance.fetchData();
+    instance.factory = ChainFactory(
+      isTestnet ? await ChainFactoryConfigs.TestNet() : await ChainFactoryConfigs.MainNet()
+    );
+    instance.config = isTestnet
+      ? await ChainFactoryConfigs.TestNet()
+      : await ChainFactoryConfigs.MainNet();
+    instance.isV3Enabled = v3_bridge_mode;
+
+    return instance;
   }
 
   approveNFT = async (
@@ -230,11 +234,11 @@ export class XPDecentralizedUtility {
       signatures = window.sigs
         ? window.sigs
         : await targetChain
-            .getStorageContract()
-            .getLockNftSignatures(
-              hash,
-              v3_ChainId[originChainIdentifier.nonce].name
-            );
+          .getStorageContract()
+          .getLockNftSignatures(
+            hash,
+            v3_ChainId[originChainIdentifier.nonce].name
+          );
       console.log("inside loop signatures: ", signatures);
       console.log(
         "inside loop validatorCount: ",
@@ -338,26 +342,28 @@ export class XPDecentralizedUtility {
       const sdk = await import("@hashgraph/sdk");
       targetChain.injectSDK(sdk);
     }
+    let extraArgs;
+    if (targetChainIdentifier.nonce === Chain.VECHAIN) {
+      extraArgs = {
+        gasLimit: 5_000_000
+      }
+    }
     console.log("transformed data", targetChain.transform(nftData));
     if (nftData.nftType === "multiple") {
       console.log("claiming sft", nftData?.tokenAmount);
       claim = await targetChain.claimSft(
         targetChainSigner,
         targetChain.transform(nftData),
-        signatures
-        // {
-        //   gasLimit: 5_000_000
-        // }
+        signatures,
+        extraArgs
       );
     } else {
       console.log("claiming nft");
       claim = await targetChain.claimNft(
         targetChainSigner,
         targetChain.transform(nftData),
-        signatures
-        // {
-        //   gasLimit: 5_000_000
-        // }
+        signatures,
+        extraArgs
       );
     }
     console.log("claimed: ", claim);

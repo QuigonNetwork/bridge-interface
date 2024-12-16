@@ -499,6 +499,8 @@ class EVM extends AbstractChain {
 }
 
 class VeChain extends AbstractChain {
+  v3Bridge = true;
+
   constructor(params) {
     super(params);
   }
@@ -842,7 +844,7 @@ class Cosmos extends AbstractChain {
   }
 
   async getNFTs(address, secretCred) {
-    const xPDecentralizedUtility = new XPDecentralizedUtility();
+    const xPDecentralizedUtility = await XPDecentralizedUtility.create();
     return xPDecentralizedUtility.nftList(ChainNonce.SECRET, address, secretCred.contract, {
       viewingKey: secretCred.viewKey,
     })
@@ -873,7 +875,7 @@ class Cosmos extends AbstractChain {
     if (!this.signer)
       throw new Error("No signer for ", this.chainParams.text);
     try {
-      const xPDecentralizedUtility = new XPDecentralizedUtility();
+      const xPDecentralizedUtility = await XPDecentralizedUtility.create();
       const bal = xPDecentralizedUtility.getBalance(ChainNonce.SECRET, this.signer)
       return bal;
     } catch (e) {
@@ -1259,7 +1261,7 @@ class ICP extends AbstractChain {
   }
 
   async getNFTs(address, contract) {
-    const xPDecentralizedUtility = new XPDecentralizedUtility();
+    const xPDecentralizedUtility = await XPDecentralizedUtility.create();
     return xPDecentralizedUtility.nftList(ChainNonce.DFINITY, address, contract)
   }
 
@@ -1372,7 +1374,7 @@ class ICP extends AbstractChain {
     if (!this.signer)
       throw new Error("No signer for ", this.chainParams.text);
     try {
-      const xPDecentralizedUtility = new XPDecentralizedUtility();
+      const xPDecentralizedUtility = await XPDecentralizedUtility.create();
       const bal = xPDecentralizedUtility.getBalance(ChainNonce.DFINITY, this.signer)
       return bal;
     } catch (e) {

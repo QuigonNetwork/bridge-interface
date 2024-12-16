@@ -30,7 +30,6 @@ const SecretAuth = ({ setLogdIn, serviceContainer }) => {
   // const [contract, setContract] = useState();
   const [contractOnBlur, setContractOnBlur] = useState(false);
   const [importBlocked, setImportBlocked] = useState(false);
-  const xPDecentralizedUtility = new XPDecentralizedUtility();
 
   const { account, checkWallet, secretCred, NFTSetToggler, from } = useSelector(
     ({
@@ -45,6 +44,7 @@ const SecretAuth = ({ setLogdIn, serviceContainer }) => {
   );
 
   const getNfts = async () => {
+    const xPDecentralizedUtility = await XPDecentralizedUtility.create();
     let secretNFTs = await xPDecentralizedUtility.nftList(
       Chain.SECRET,
       checkWallet || account,
@@ -80,6 +80,7 @@ const SecretAuth = ({ setLogdIn, serviceContainer }) => {
     try {
       setImportBlocked(true);
       const x = await bridge.getChain(Chain.SECRET);
+      const xPDecentralizedUtility = await XPDecentralizedUtility.create();
 
       const created = await xPDecentralizedUtility.setViewingKey(
         Chain.SECRET,
