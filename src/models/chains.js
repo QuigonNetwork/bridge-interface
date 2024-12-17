@@ -852,8 +852,7 @@ class Cosmos extends AbstractChain {
 
 
   filterNFTs(nfts) {
-    const chain = getChainObject(ChainNonce.SECRET);
-    const chainId = isTestnet ? chain.tnChainId : chain.chainId;
+    const chainId = ChainNonce.SECRET.toString();
     return nfts.map((nft) => ({
       ...nft,
       native: {
@@ -863,8 +862,8 @@ class Cosmos extends AbstractChain {
       metaData: !nft?.uri
         ? {
           ...nft?.native.metadata,
-          image: nft?.native.metadata?.media[0]?.url,
-          imageFormat: nft?.native.metadata?.media[0]?.extension,
+          image: nft?.native.metadata?.media?.[0]?.url,
+          imageFormat: nft?.native.metadata?.media?.[0]?.extension,
         }
         : null,
     }));

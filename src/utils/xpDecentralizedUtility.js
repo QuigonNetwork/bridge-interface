@@ -5,6 +5,7 @@ import { isTestnet, v3_bridge_mode } from "../components/values";
 import { v3_ChainId, v3_getChainNonce } from "./chainsTypes";
 import { ethers } from "ethers";
 import { CHAIN_INFO } from "xp.network";
+import { retry } from "./retry";
 
 export class XPDecentralizedUtility {
   isV3Enabled = false;
@@ -426,6 +427,11 @@ export class XPDecentralizedUtility {
     );
     return await destChain.readClaimed721Event(hash);
   };
+
+  readClaimedEvent = async (nftType, destChainIdentifier, hash) => {
+    const readEvent = nftType === "multiple" ? this.readClaimed1155Event : this.readClaimed721Event;
+    return await retry(() => readEvent(destChainIdentifier, hash), 5);
+  }
 
   readClaimed1155Event = async (destChainIdentifier, hash) => {
     const destChain = await this.getChainFromFactory(

@@ -16,8 +16,6 @@ import {
 import { XPDecentralizedUtility } from "../../utils/xpDecentralizedUtility";
 import { Modal, Spinner } from "react-bootstrap";
 import WalletList from "../Wallet/WalletList";
-import { sleep } from "../../utils";
-import { TIME } from "../../constants/time";
 import { setQRCodeModal } from "../Wallet/TONWallet/tonStore";
 
 export const ClaimInDestination = (connection) => {
@@ -106,19 +104,11 @@ export const ClaimInDestination = (connection) => {
         console.log({ claimedHash, nftType });
 
         if (targetChainIdentifier.showClaimedNftContract) {
-          await sleep(TIME.FIVE_SECONDS);
-          let claimData;
-          if (nftType === "multiple") {
-            claimData = await xPDecentralizedUtility.readClaimed1155Event(
-              targetChainIdentifier,
-              claimedHash,
-            );
-          } else {
-            claimData = await xPDecentralizedUtility.readClaimed721Event(
-              targetChainIdentifier,
-              claimedHash,
-            );
-          }
+          const claimData = await xPDecentralizedUtility.readClaimedEvent(
+            nftType,
+            targetChainIdentifier,
+            claimedHash,
+          );
           dispatch(setTransferLoaderModal(false));
           dispatch(
             setClaimedNftContractModal({
