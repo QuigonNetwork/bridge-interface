@@ -2,7 +2,7 @@ import { ChainFactory, ChainFactoryConfigs } from "xp-decentralized-sdk";
 import { sleep } from "../utils";
 import { TIME } from "../constants/time";
 import { isTestnet, v3_bridge_mode } from "../components/values";
-import { v3_ChainId, v3_getChainNonce } from "./chainsTypes";
+import { Chain, v3_ChainId, v3_getChainNonce } from "./chainsTypes";
 import { ethers } from "ethers";
 import { CHAIN_INFO } from "xp.network";
 import { retry } from "./retry";
@@ -16,7 +16,9 @@ export class XPDecentralizedUtility {
     const instance = new XPDecentralizedUtility();
     // instance.factory = await instance.fetchData();
     instance.factory = ChainFactory(
-      isTestnet ? await ChainFactoryConfigs.TestNet() : await ChainFactoryConfigs.MainNet()
+      isTestnet
+        ? await ChainFactoryConfigs.TestNet()
+        : await ChainFactoryConfigs.MainNet()
     );
     instance.config = isTestnet
       ? await ChainFactoryConfigs.TestNet()
@@ -218,7 +220,11 @@ export class XPDecentralizedUtility {
   getLockNftSignatures = async (targetChain, hash, originChainIdentifier) => {
     await sleep(TIME.FIVE_SECONDS);
     console.log("hash", hash, v3_ChainId[originChainIdentifier.nonce].name);
-    let signatures = await this.factory.getLockNftSignatures(targetChain, hash, v3_ChainId[originChainIdentifier.nonce].name);
+    let signatures = await this.factory.getLockNftSignatures(
+      targetChain,
+      hash,
+      v3_ChainId[originChainIdentifier.nonce].name
+    );
     console.log("signatures: ", signatures);
 
     const validatorCount = Number(await targetChain.getValidatorCount());
@@ -232,7 +238,11 @@ export class XPDecentralizedUtility {
       await sleep(TIME.FIVE_SECONDS);
       signatures = window.sigs
         ? window.sigs
-        : await this.factory.getLockNftSignatures(targetChain, hash, v3_ChainId[originChainIdentifier.nonce].name);
+        : await this.factory.getLockNftSignatures(
+            targetChain,
+            hash,
+            v3_ChainId[originChainIdentifier.nonce].name
+          );
       console.log("inside loop signatures: ", signatures);
       console.log(
         "inside loop validatorCount: ",
@@ -343,9 +353,11 @@ export class XPDecentralizedUtility {
         targetChainSigner,
         targetChain.transform(nftData),
         signatures,
-        {
-          gasLimit: 5_000_000
-        }
+        targetChainIdentifier?.nonce === Chain.VECHAIN
+          ? {
+              gasLimit: 5_000_000,
+            }
+          : {}
       );
     } else {
       console.log("claiming nft");
@@ -353,9 +365,11 @@ export class XPDecentralizedUtility {
         targetChainSigner,
         targetChain.transform(nftData),
         signatures,
-        {
-          gasLimit: 5_000_000
-        }
+        targetChainIdentifier?.nonce === Chain.VECHAIN
+          ? {
+              gasLimit: 5_000_000,
+            }
+          : {}
       );
     }
     console.log("claimed: ", claim);
@@ -422,9 +436,12 @@ export class XPDecentralizedUtility {
   };
 
   readClaimedEvent = async (nftType, destChainIdentifier, hash) => {
-    const readEvent = nftType === "multiple" ? this.readClaimed1155Event : this.readClaimed721Event;
+    const readEvent =
+      nftType === "multiple"
+        ? this.readClaimed1155Event
+        : this.readClaimed721Event;
     return await retry(() => readEvent(destChainIdentifier, hash), 5);
-  }
+  };
 
   readClaimed1155Event = async (destChainIdentifier, hash) => {
     const destChain = await this.getChainFromFactory(

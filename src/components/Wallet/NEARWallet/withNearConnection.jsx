@@ -73,7 +73,7 @@ export const withNearConnection = (Wrapped) =>
         (async () => {
           const xpDecentralizedUtility = await XPDecentralizedUtility.create();
           console.log({ xpDecentralizedUtility });
-          const nearParams = xpDecentralizedUtility.config.nearParams;
+          const nearParams = xpDecentralizedUtility.config.bridgeChains.nearParams;
           // const url = window.location.href;
           const [_selector, chainWrapper] = await Promise.all([
             setupWalletSelector({

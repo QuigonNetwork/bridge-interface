@@ -197,7 +197,8 @@ const TransferredNft = ({
       (to.type === "EVM" && txnStatus === "completed") ||
       (to.type === "Elrond" && txnStatus === "completed") ||
       (to.type === "DFINITY" && txnStatus === "completed") ||
-      (to.type === "Casper" && txnStatus === "completed"),
+      (to.type === "Casper" && txnStatus === "completed") ||
+      (to.type === "VeChain" && txnStatus === "completed"),
   );
   console.log({ completed, to, v3BridgeTx, txnStatus });
 

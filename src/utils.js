@@ -356,7 +356,7 @@ const connectWallet = {
   NEAR: async (bridge, nonce) => {
     const chainWrapper = await bridge.getChain(nonce);
     const xpDecentralizedUtility = await XPDecentralizedUtility.create();
-    const nearParams = xpDecentralizedUtility.config.nearParams;
+    const nearParams = xpDecentralizedUtility.config.bridgeChains.nearParams;
     const signer = await connectMyNearWallet(nearParams?.bridge, chainWrapper); // Connect to the ICP wallet and get the signer
     chainWrapper.setSigner(signer); // Set the signer in the chainWrapper
   },
