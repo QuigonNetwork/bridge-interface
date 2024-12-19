@@ -218,9 +218,7 @@ export class XPDecentralizedUtility {
   getLockNftSignatures = async (targetChain, hash, originChainIdentifier) => {
     await sleep(TIME.FIVE_SECONDS);
     console.log("hash", hash, v3_ChainId[originChainIdentifier.nonce].name);
-    let signatures = await targetChain
-      .getStorageContract()
-      .getLockNftSignatures(hash, v3_ChainId[originChainIdentifier.nonce].name);
+    let signatures = await this.factory.getLockNftSignatures(targetChain, hash, v3_ChainId[originChainIdentifier.nonce].name);
     console.log("signatures: ", signatures);
 
     const validatorCount = Number(await targetChain.getValidatorCount());
@@ -234,12 +232,7 @@ export class XPDecentralizedUtility {
       await sleep(TIME.FIVE_SECONDS);
       signatures = window.sigs
         ? window.sigs
-        : await targetChain
-          .getStorageContract()
-          .getLockNftSignatures(
-            hash,
-            v3_ChainId[originChainIdentifier.nonce].name
-          );
+        : await this.factory.getLockNftSignatures(targetChain, hash, v3_ChainId[originChainIdentifier.nonce].name);
       console.log("inside loop signatures: ", signatures);
       console.log(
         "inside loop validatorCount: ",
