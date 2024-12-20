@@ -93,6 +93,7 @@ const TransferredNft = ({
             from.type !== "DFINITY" &&
             from.type !== "Tezos" &&
             from.type !== "Casper" &&
+            from.type !== "Solana" &&
             from.type !== "NEAR"
           ) {
             if (from.value === "Secret") {
@@ -166,6 +167,7 @@ const TransferredNft = ({
       from.type === "Tezos" ||
       from.type === "DFINITY" ||
       from.type === "Casper" ||
+      from.type === "Solana" ||
       from.type === "NEAR"
     ) {
       setTxnStatus("completed");
@@ -198,6 +200,7 @@ const TransferredNft = ({
       (to.type === "Elrond" && txnStatus === "completed") ||
       (to.type === "DFINITY" && txnStatus === "completed") ||
       (to.type === "Casper" && txnStatus === "completed") ||
+      (to.type === "Solana" && txnStatus === "completed") ||
       (to.type === "VeChain" && txnStatus === "completed"),
   );
   console.log({ completed, to, v3BridgeTx, txnStatus });

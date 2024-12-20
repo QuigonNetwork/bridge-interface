@@ -1070,6 +1070,7 @@ class Near extends AbstractChain {
 
 class Solana extends AbstractChain {
   disableWhiteList = true;
+  v3Bridge = true;
 
   constructor(params) {
     super(params);

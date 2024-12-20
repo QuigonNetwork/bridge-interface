@@ -389,7 +389,7 @@ export default function WalletList({ connected, input, discount }) {
       order: 889,
       type: "Solana",
       keyName: "Phantom",
-      isDisabled: true,
+      isDisabled: false,
     },
     {
       Component: <Solflare key="Solflare" close={connected} />,
@@ -399,7 +399,7 @@ export default function WalletList({ connected, input, discount }) {
       order: 889,
       type: "Solana",
       keyName: "Solflare",
-      isDisabled: true,
+      isDisabled: false,
     },
     {
       Component: <IcpWallet key="ICP" close={connected} />,

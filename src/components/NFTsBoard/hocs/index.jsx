@@ -8,6 +8,7 @@ import { withEVM as EVM } from "./evmHOC";
 import { withHedera as Hedera } from "./hederaHOC";
 import { withICP as ICP } from "./icpHOC";
 import { withCasper as Casper } from "./casperHOC";
+import { withSolana as Solana } from "./solanaHOC";
 import { withTon as Ton } from "./tonHOC";
 import { withServices } from "../../App/hocs/withServices";
 import { withCosmos as Cosmos } from "./cosmosHOC";
@@ -46,6 +47,7 @@ export default compose(
   Cosmos,
   Ton,
   Algo,
+  Solana,
   NEAR,
   EVM,
   withChains,

@@ -15,6 +15,7 @@ import { connectPlugWallet } from "./components/Wallet/IcpConnections";
 import { connectCasperWallet, connectKeplr, connectVeChainWallet } from "./components/Wallet/ConnectWalletHelper";
 import { connectMyNearWallet } from "./components/Wallet/ConnectWalletHelper";
 import { XPDecentralizedUtility } from "./utils/xpDecentralizedUtility";
+import { onPhantom } from "./components/Wallet/SOLWallet/SoloanaConnectors";
 
 /*const testnet = window.location.pathname.includes("testnet");
 const staging = window.location.pathname.includes("staging");
@@ -353,6 +354,11 @@ const connectWallet = {
     const signer = await connectCasperWallet();
     chainWrapper.setSigner(signer);
   },
+  SOLANA: async (bridge, nonce) => {
+    const chainWrapper = await bridge.getChain(nonce);
+    const account = await onPhantom();
+    chainWrapper.setSigner(account.signer);
+  },
   NEAR: async (bridge, nonce) => {
     const chainWrapper = await bridge.getChain(nonce);
     const xpDecentralizedUtility = await XPDecentralizedUtility.create();
@@ -398,6 +404,9 @@ export const connectWalletByChain = async (
       await connectWallet[type](bridge, nonce);
       break;
     case "CASPER":
+      await connectWallet[type](bridge, nonce);
+      break;
+    case "SOLANA":
       await connectWallet[type](bridge, nonce);
       break;
     case "NEAR":

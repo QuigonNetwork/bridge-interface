@@ -239,10 +239,10 @@ export class XPDecentralizedUtility {
       signatures = window.sigs
         ? window.sigs
         : await this.factory.getLockNftSignatures(
-            targetChain,
-            hash,
-            v3_ChainId[originChainIdentifier.nonce].name
-          );
+          targetChain,
+          hash,
+          v3_ChainId[originChainIdentifier.nonce].name
+        );
       console.log("inside loop signatures: ", signatures);
       console.log(
         "inside loop validatorCount: ",
@@ -355,8 +355,8 @@ export class XPDecentralizedUtility {
         signatures,
         targetChainIdentifier?.nonce === Chain.VECHAIN
           ? {
-              gasLimit: 5_000_000,
-            }
+            gasLimit: 5_000_000,
+          }
           : {}
       );
     } else {
@@ -367,8 +367,8 @@ export class XPDecentralizedUtility {
         signatures,
         targetChainIdentifier?.nonce === Chain.VECHAIN
           ? {
-              gasLimit: 5_000_000,
-            }
+            gasLimit: 5_000_000,
+          }
           : {}
       );
     }
@@ -381,6 +381,7 @@ export class XPDecentralizedUtility {
       v3_ChainId[targetChainIdentifier?.nonce].name === "SECRET" ||
       v3_ChainId[targetChainIdentifier?.nonce].name === "MULTIVERSX" ||
       v3_ChainId[targetChainIdentifier?.nonce].name === "CASPER" ||
+      v3_ChainId[targetChainIdentifier?.nonce].name === "SOLANA" ||
       v3_ChainId[targetChainIdentifier?.nonce].name === "NEAR"
     ) {
       return {
