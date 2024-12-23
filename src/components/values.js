@@ -554,7 +554,7 @@ export const chains = [
         testNet: biz,
         mainnet: biz,
         coming: !biz,
-        isDisabled: true,
+        isDisabled: false,
     },
     {
         type: "NEAR",

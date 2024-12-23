@@ -1120,6 +1120,8 @@ class Solana extends AbstractChain {
 }
 
 class APTOS extends AbstractChain {
+  v3Bridge = true;
+
   constructor(params) {
     super(params);
   }

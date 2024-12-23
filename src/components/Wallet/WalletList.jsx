@@ -345,11 +345,11 @@ export default function WalletList({ connected, input, discount }) {
       name: "Petra",
       keyName: "Petra",
 
-      mobile: false,
+      mobile: true,
       desktop: true,
       order: 20,
       type: "APTOS",
-      isDisabled: true,
+      isDisabled: false,
     },
     {
       Component: <Pontem key="pontem" close={connected} />,
