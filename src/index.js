@@ -28,6 +28,9 @@ import WhiteListedPool from "./services/whiteListedPool";
 
 import { WrapWithWalletConnect } from "./components/Wallet/EVMWallet/WalletConnect";
 import { createSafeStorage } from "./utils";
+import { AptosWalletAdapterProvider } from "@aptos-labs/wallet-adapter-react";
+import { Network } from "@aptos-labs/ts-sdk";
+import { isTestnet } from "./components/values";
 
 function getLibrary(provider) {
     return new Web3(provider);
@@ -51,17 +54,24 @@ const container = document.getElementById("root");
 const root = createRoot(container);
 /*export*/ const app = (
     <Web3ReactProvider getLibrary={getLibrary}>
-        <Services>
-            <Provider store={store}>
-                <BrowserRouter>
-                    <ErrorBoundary>
-                        <NavBar />
-                        <App />
-                        <Footer />
-                    </ErrorBoundary>
-                </BrowserRouter>
-            </Provider>
-        </Services>
+        <AptosWalletAdapterProvider
+            plugins={[]}
+            autoConnect={false}
+            dappConfig={{ network: isTestnet ? Network.TESTNET : Network.MAINNET }}
+            onError={() => { }}
+        >
+            <Services>
+                <Provider store={store}>
+                    <BrowserRouter>
+                        <ErrorBoundary>
+                            <NavBar />
+                            <App />
+                            <Footer />
+                        </ErrorBoundary>
+                    </BrowserRouter>
+                </Provider>
+            </Services>
+        </AptosWalletAdapterProvider>
     </Web3ReactProvider>
 );
 
