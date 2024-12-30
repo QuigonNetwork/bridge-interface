@@ -490,9 +490,9 @@ export const chains = [
         // chainId: 1564830818,
         //tnChainId: 1305754875840118,
         image: { avatar: true, src: InternetComputer },
-        testNet: true,
-        mainnet: true,
-        newChain: true,
+        testNet: false,
+        mainnet: false,
+        newChain: false,
         coming: false,
     },
     {
