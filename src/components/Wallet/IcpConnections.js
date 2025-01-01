@@ -2,7 +2,7 @@ import { icpNetworks } from "../values";
 
 export const connectPlugWallet = async (chainWrapper, testnet) => {
   try {
-    const provider = window.ic?.plug; // Assuming Plug wallet is used for ICP
+    const provider = window.ic?.infinityWallet; // Assuming Plug wallet is used for ICP
     if (!provider) {
       window.open("https://plugwallet.ooo/", "_blank");
       return;
@@ -16,7 +16,7 @@ export const connectPlugWallet = async (chainWrapper, testnet) => {
       timeout: 6e4,
     });
 
-    const signer = window.ic?.plug;
+    const signer = window.ic?.infinityWallet;
     return signer;
   } catch (error) {
     console.error("Error connecting to Plug wallet:", error);

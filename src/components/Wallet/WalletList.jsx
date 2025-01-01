@@ -409,7 +409,7 @@ export default function WalletList({ connected, input, discount }) {
       order: 1,
       type: "DFINITY",
       keyName: "ICPPlug",
-      isDisabled: true,
+      isDisabled: false,
     },
     {
       Component: <CasperWallet key="Casper" close={connected} />,

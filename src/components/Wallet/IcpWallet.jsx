@@ -44,7 +44,7 @@ function IcpWallet({ serviceContainer }) {
       dispatch(
         setError({
           message: `You have to install ${name} wallet into your browser`,
-        }),
+        })
       );
       return;
     }
@@ -168,7 +168,8 @@ function IcpWallet({ serviceContainer }) {
         <p>Bitfinity</p>
       </li>
       <li
-        style={isMobile ? { display: "none" } : getStyle()}
+        // style={isMobile ? { display: "none" } : getStyle()}
+        style={{ display: "none" }}
         onClick={() => onClickHandler("Plug")}
         className="wllListItem keplr"
         data-wallet="Plug"
@@ -178,7 +179,8 @@ function IcpWallet({ serviceContainer }) {
       </li>
 
       <li
-        style={isMobile ? { display: "none" } : getStyle()}
+        // style={isMobile ? { display: "none" } : getStyle()}
+        style={{ display: "none" }}
         onClick={() => onClickHandler("Stoic")}
         className="wllListItem keplr"
         data-wallet="Stoic"
