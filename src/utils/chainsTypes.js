@@ -137,6 +137,7 @@ export const v3_ChainId = {
   29: { name: 'HEDERA', type: "HEDERA" },
   32: { name: "MOONBEAM", type: "EVM" },
   33: { name: "ABEYCHAIN", type: "EVM" },
+  38: { name: "BITGERT", type: "EVM" },
   39: { name: 'CASPER', type: "CASPER" },
   43: { name: "BASE", type: "EVM" },
   28: { name: 'ICP', type: "DFINITY" },
@@ -163,4 +164,5 @@ export const v3_getChainNonce = {
   'BASE': 43,
   'NEAR': 31,
   'BLAST': 45,
+  'BITGERT': 38
 }

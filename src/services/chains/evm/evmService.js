@@ -18,6 +18,7 @@ export async function switchNetwork(chain) {
         chainId: `0x${Number(id).toString(16)}`,
         nativeCurrency: params.nativeCurrency,
         rpcUrls: params.rpcUrls,
+        blockExplorerUrls: params?.explorers?.length > 0 ? params?.explorers.map(e => e.url) : []
     };
 
     const chainId = `0x${Number(id).toString(16)}`;

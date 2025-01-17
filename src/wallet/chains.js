@@ -94,8 +94,20 @@ export const allchains = [
     },
     {
         chainName: "Bitgert MainNet",
-        rpcUrls: ["https://rpc.icecreamswap.com"],
+        rpcUrls: ["https://rpc-bitgert.icecreamswap.com"],
         chainId: 32520,
+        nativeCurrency: {
+            name: "Brise",
+            symbol: "Brise",
+            decimals: 18,
+        },
+        explorers: [
+            {
+                name: "brisescan",
+                url: "https://brisescan.com",
+                standard: "EIP3091",
+            },
+        ],
     },
     {
         chainName: "Arbitrum Nova",
