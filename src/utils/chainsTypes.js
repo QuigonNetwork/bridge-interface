@@ -143,7 +143,6 @@ export const v3_ChainId = {
   28: { name: 'ICP', type: "DFINITY" },
   45: { name: 'BLAST', type: "EVM" },
   31: { name: "NEAR", type: "NEAR" },
-  12: { name: "HARMONY", type: "EVM" },
 };
 
 export const v3_getChainNonce = {
@@ -165,6 +164,5 @@ export const v3_getChainNonce = {
   'BASE': 43,
   'NEAR': 31,
   'BLAST': 45,
-  'BITGERT': 38,
-  'HARMONY': 12,
+  'BITGERT': 38
 }

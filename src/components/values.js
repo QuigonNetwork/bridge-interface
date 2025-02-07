@@ -375,7 +375,7 @@ export const chains = [
         maintenance: false,
         testNet: false,
         mainnet: true,
-        isDisabled: false,
+        isDisabled: true,
     },
     {
         type: "EVM",
